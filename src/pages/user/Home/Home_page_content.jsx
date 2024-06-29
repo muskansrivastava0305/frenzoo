@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import Home_page from "./Home_page";
-import Custom_Food from "./utils/Custom_Food";
-import ProductAccordion from "./ProductAccordion";
+import { Custom_Food } from "../../../components/user";
+import ProductAccordion from "../utils/ProductAccordion";
 import { Link } from "react-router-dom";
-import Bottom_cart_comp from "./utils/Bottom_cart_comp";
+import {Bottom_cart_comp} from "../../../components/user";
 
 function Home_page_content() {
   return (

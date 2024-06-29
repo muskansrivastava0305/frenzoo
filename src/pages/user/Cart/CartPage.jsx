@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import Bottom_cart_comp from "./utils/Bottom_cart_comp";
+import { Bottom_cart_comp } from "../../../components/user";
 
 function CartPage() {
 
@@ -15,26 +15,26 @@ function CartPage() {
       };
 
   return (
-    <div className=" flex justify-center px-4 w-full">
-      <div className=" w-[34rem] mb-[10%] px-4 py-4">
+    <div className=" flex justify-center px-2 sm:px-4 w-full">
+      <div className=" w-full sm:w-[34rem]  mb-[5rem] px-0 sm:px-4 py-4">
         <div className=" text-lg text-black font-semibold text-center">
           Frenzoo Cafe & Restaurant
         </div>
         <div className=" font-semibold mt-8">Food Items</div>
-        <div className=" flex justify-between mt-4 items-center shadow-custom p-4">
-          <div  className=" flex items-start gap-2">
+        <div className=" flex justify-between gap-2 mt-4 items-center shadow-custom  px-2 sm:px-4 py-4">
+          <div  className=" flex items-start gap-1 sm:gap-2">
             <img className=" pt-1"
               src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
               alt=""
             />
             <div>
-              <div className=" text-gray-800 font-semibold">Khatta Mitha</div>
+              <div className=" text-gray-800 text-sm sm:text-lg font-semibold">Khatta Mitha</div>
               <div className=" text-sm text-gray-500">
                 Mixing of sure & sweet
               </div>
             </div>
           </div>
-          <div className=" flex items-center gap-8">
+          <div className=" flex items-center gap-4 sm:gap-8">
             <div>
               <div className=" flex border gap-5 rounded-md border-orange-400 justify-between items-center text-orange-400 px-2 py-1">
                 <div>-</div>
@@ -57,7 +57,7 @@ function CartPage() {
             <input
               type="text"
               placeholder="Enter your cooking instruction here"
-              className=" border-none py-2 px-3 w-[18rem] placeholder:text-gray-700 placeholder:text-sm rounded-md mt-3"
+              className=" border-none py-2 px-3 w-[16rem] sm:w-[18rem] placeholder:text-gray-700 placeholder:text-[13px] sm:placeholder:text-sm rounded-md mt-3"
             />
           </div>
         </div>
@@ -108,7 +108,7 @@ function CartPage() {
           </div>
         </div>
       </div>
-      <Bottom_cart_comp price="100.00" item="1" action="Proceed to Checkout" to="/payment"/>
+      <Bottom_cart_comp price="100.00" item="1" action="Proceed to Checkout" to="/preference"/>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Qrdine_logo } from "../../components";
+import { Qrdine_logo } from "../../../components/user";
 
 function Home_page({children}) {
   const [item , setItem] =  useState(false)
