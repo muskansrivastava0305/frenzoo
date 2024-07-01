@@ -1,11 +1,35 @@
 import React, { useRef } from "react";
 import Home_page from "./Home_page";
-import { Custom_Food } from "../../../components/user";
 import ProductAccordion from "../utils/ProductAccordion";
-import { Link } from "react-router-dom";
-import {Bottom_cart_comp} from "../../../components/user";
+import { Bottom_cart_comp } from "../../../components/user";
+import { useSelector } from "react-redux";
+import {
+  selectTotalItemCount,
+  selectTotalPrice,
+} from "../../../Redux/Freatures/User/cartSlice";
+
+const products = [
+  {
+    id: 1,
+    name: "Product 1",
+    description: "This is the description for Product 1",
+  },
+  {
+    id: 2,
+    name: "Product 2",
+    description: "This is the description for Product 2",
+  },
+  {
+    id: 3,
+    name: "Product 3",
+    description: "This is the description for Product 3",
+  },
+];
 
 function Home_page_content() {
+  const price = useSelector(selectTotalPrice);
+  const totolCount = useSelector(selectTotalItemCount);
+
   return (
     <Home_page>
       <div className=" w-full flex justify-start gap-3 sm:gap-7  pb-5">
@@ -38,12 +62,21 @@ function Home_page_content() {
           </div>
           <div className=" pb-8">
             <div>
-              <ProductAccordion />
+              {products.map((product) => (
+                <ProductAccordion
+                  key={product.id}
+                  title={product.name}
+                  content={product.description}
+                />
+              ))}
             </div>
           </div>
-
-         <Bottom_cart_comp price="100.00" item="chicken" action="View Cart" to="/cart_items"/>
-
+          <Bottom_cart_comp
+            price={price}
+            item={totolCount}
+            action="View Cart"
+            to="/cart_items"
+          />
         </div>
       </div>
 

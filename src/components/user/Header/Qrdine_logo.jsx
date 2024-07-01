@@ -27,26 +27,30 @@ function Qrdine_logo() {
 
   return (
     <>
-      <div className=" flex justify-center w-full px-3">
-        <div className=" w-82">
-          <img
-            className=" w-full h-full"
-            src="https://frenzoo.qrdine-in.com/assets/images/background/restaurant-bg.png"
-            alt=""
-          />
-        </div>
-      </div>
-      <div className=" w-full flex justify-center">
-        <div className=" bg-white  rounded-2xl  w-[18rem] sm:w-[23rem] md:w-[30rem] lg:w-[34rem] shadow-custom absolute top-[16%]">
-          <div className=" py-2 mb-3 text-sm mx-4 border-dashed border-gray-200 border-b">
-            <div className=" font-semibold ">Frenzoo</div>
-            <div className=" text-gray-400 text-sm">Noida 63</div>
-          </div>
-          <div className=" text-3xl sm:text-4xl   font-bold  text-orange-400  text-center pb-5 pt-2">
-            {message}
+      <div>
+      <div className=" h-[30vh] sm:h-[40vh] bg-no-repeat bg-cover bg-center px-3 sm:px-5 py-3 sm:py-4 flex-col bg-homeImage ">
+        <div className=" w-full justify-center items-center flex">
+          <div className=" w-[10rem] sm:w-[13rem] flex justify-center items-center">
+            <img
+              className=" h-full w-full"
+              src="https://pindballuchi.com/wp-content/uploads/2024/02/Logo-1-removebg-preview.png"
+              alt="logo"
+            />
           </div>
         </div>
+        <div className=" pt-[6rem] sm:pt-[9rem] flex justify-center items-center">
+          <div className=" bg-[#ffffff1a] rounded-md w-[25rem] pt-2 px-3">
+            <div className=" pb-4">
+              <div className=" font-semibold text-[13px] sm:text-md text-white">Pind Balluchi</div>
+              <div className=" text-sm text-gray-400">Noida</div>
+            </div>
+            <div className=" text-3xl md:text-4xl pb-3  pt-3 sm:pt-6 text-orange-400 font-semibold text-center">
+              <div>{message}</div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
     </>
   );
 }
