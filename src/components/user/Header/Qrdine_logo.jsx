@@ -38,8 +38,8 @@ function Qrdine_logo() {
             />
           </div>
         </div>
-        <div className=" pt-[5rem] sm:pt-[9rem] flex justify-center items-center">
-          <div className=" bg-[#ffffff1a] rounded-md w-[25rem] pt-2 px-3">
+        <div className=" relative pt-[5rem] sm:pt-[9rem] flex justify-center items-center">
+          <div className=" absolute top-[7rem] sm:top-[11.4rem] bg-[#ffffff1a] rounded-md w-[20rem] sm:w-[25rem] pt-2 px-3">
             <div className=" pb-4">
               <div className=" font-semibold text-[13px] sm:text-md text-white">Pind Balluchi</div>
               <div className=" text-sm text-gray-400">Noida</div>
