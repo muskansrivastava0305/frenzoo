@@ -13,9 +13,11 @@ function Home_page({children}) {
     </div>)}
 
    <div className=" w-full justify-center flex px-4">
-   <div className=" mt-32 w-[34rem] lg:w-[40rem]">
-    {children}
-   </div>
+  {!item && (
+     <div className=" mt-32 mb-[5rem] w-[34rem] lg:w-[40rem]">
+     {children}
+    </div>
+  )}
    </div>
   </div>
   )
