@@ -18,7 +18,7 @@ const ProductAccordion = ({ category, products }) => {
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
-  };
+  }
 
   useEffect(() => {
     if (contentRef.current) {

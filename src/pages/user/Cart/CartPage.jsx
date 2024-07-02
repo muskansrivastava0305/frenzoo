@@ -109,14 +109,14 @@ function CartPage() {
               <div>Sub Total</div>
               <div>Discrount</div>
             </div>
-            <div className=" font-semibold">
+            <div className=" flex flex-col items-end justify-end font-semibold">
               <div>₹ {totalAmount}.00</div>
-              <div>₹ 00.00</div>
+              <div>₹ 0</div>
             </div>
           </div>
           <div className=" border-dashed border-b border-b-gray-300 pb-3 flex justify-between pt-2 items-center">
             <div>Tax</div>
-            <div className=" font-semibold">₹ 00.00</div>
+            <div className=" font-semibold">₹ 0</div>
           </div>
           <div className=" flex justify-between items-center mt-2 mb-2">
             <div>Grand Total</div>

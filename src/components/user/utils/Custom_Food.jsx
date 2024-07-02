@@ -69,7 +69,7 @@ function Custom_Food({ setCustomFoodComp, product, onAddProduct }) {
             >
               <div>Big</div>
               <div className="flex gap-5">
-                <label htmlFor="">₹549</label>
+                <label htmlFor="">₹ 549</label>
                 <input type="radio" name="size" value="1" ref={bigRef} id="big" />
               </div>
             </div>
@@ -79,7 +79,7 @@ function Custom_Food({ setCustomFoodComp, product, onAddProduct }) {
             >
               <div>Small</div>
               <div className="flex gap-5">
-                <label htmlFor="">₹20</label>
+                <label htmlFor="">₹ 20</label>
                 <input type="radio" name="size" value="2" ref={smallRef} id="small" />
               </div>
             </div>
