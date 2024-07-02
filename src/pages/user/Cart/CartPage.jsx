@@ -1,7 +1,7 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Bottom_cart_comp } from "../../../components/user";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   decrementProduct,
   incrementProduct,
@@ -16,6 +16,7 @@ function CartPage() {
   const dispatch = useDispatch();
   const PhonePeRef = useRef(null);
   const cashRef = useRef(null);
+  const navigate =  useNavigate()
 
   const handlePayClick = (size) => {
     if (size === "phonepe") {
@@ -32,6 +33,12 @@ function CartPage() {
   const handleDecrement = (id) => {
     dispatch(decrementProduct({id}));
   };
+
+  useEffect(()=>{
+    if(!products.length){
+      navigate('/')
+    }
+  })
 
   return (
     <div className=" flex justify-center px-2 sm:px-4 w-full">

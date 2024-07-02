@@ -10,7 +10,8 @@ import { Custom_Food } from "../../../components/user";
 const ProductAccordion = ({ category, products }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedProducts, setExpandedProducts] = useState({});
-  const [ isCustomFoodComp , setCustomFoodComp] =  useState(false)
+  const [isCustomFoodComp, setCustomFoodComp] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const contentRef = useRef(null);
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cart.products);
@@ -29,17 +30,23 @@ const ProductAccordion = ({ category, products }) => {
     }
   }, [isOpen]);
 
-  const handleAddProduct = (product) => {
-    // setCustomFoodComp(true)
-    dispatch(addProduct(product));
+  const handleShowCustomFood = (product) => {
+    setSelectedProduct(product);
+    setCustomFoodComp(true);
   };
 
-  const handleIncrement = (id) => {
-    dispatch(incrementProduct({ id }));
+  const handleAddProduct = (product, options) => {
+    const customizedProduct = { ...product, ...options };
+    dispatch(addProduct(customizedProduct));
+    setCustomFoodComp(false);
   };
 
-  const handleDecrement = (id) => {
-    dispatch(decrementProduct({ id }));
+  const handleIncrement = (id, size) => {
+    dispatch(incrementProduct({ id, size }));
+  };
+
+  const handleDecrement = (id, size) => {
+    dispatch(decrementProduct({ id, size }));
   };
 
   const handleToggle = (id) => {
@@ -55,7 +62,6 @@ const ProductAccordion = ({ category, products }) => {
     }
     return description.substring(0, 20) + "...";
   };
-
 
   return (
     products.length > 0 && (
@@ -125,17 +131,17 @@ const ProductAccordion = ({ category, products }) => {
                   <div className="flex justify-center mt-2">
                     {productInCart ? (
                       <div className="border-[#ff8e2f] flex gap-4 justify-center items-center text-[#ff8e2f] rounded-md border px-4 py-2">
-                        <button onClick={() => handleDecrement(item.id)}>
+                        <button onClick={() => handleDecrement(item.id, item.size)}>
                           <i className="fa-solid fa-minus"></i>
                         </button>
                         <div>{productInCart.quantity}</div>
-                        <button onClick={() => handleIncrement(item.id)}>
+                        <button onClick={() => handleIncrement(item.id, item.size)}>
                           <i className="fa-solid fa-plus"></i>
                         </button>
                       </div>
                     ) : (
                       <button
-                        onClick={() => handleAddProduct(item)}
+                        onClick={() => handleShowCustomFood(item)}
                         className="border-[#ff8e2f] flex gap-1 justify-center items-center text-[#ff8e2f] rounded-md border px-6 py-2"
                       >
                         <i className="fa-solid fa-plus"></i>
@@ -143,14 +149,18 @@ const ProductAccordion = ({ category, products }) => {
                       </button>
                     )}
                   </div>
-                {
-                  isCustomFoodComp && <Custom_Food item={item} setCustomFoodComp={setCustomFoodComp}/>
-                }
                 </div>
               </div>
             );
           })}
         </div>
+        {isCustomFoodComp && (
+          <Custom_Food
+            product={selectedProduct}
+            setCustomFoodComp={setCustomFoodComp}
+            onAddProduct={handleAddProduct}
+          />
+        )}
       </div>
     )
   );
