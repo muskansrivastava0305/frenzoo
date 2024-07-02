@@ -41,7 +41,7 @@ function Custom_Food({ setCustomFoodComp, product, onAddProduct }) {
   };
 
   return (
-    <div className="flex justify-center items-center w-full h-full fixed right-0 top-0">
+    <div className="flex justify-center bg-[#000000cc] items-center w-full h-full fixed right-0 top-0">
       <div className="bg-white w-[45rem] mx-3 h-fit shadow-custom border rounded-3xl">
         <div>
           <button onClick={handleClose} className="inline-block px-7 pt-3 text-gray-700 text-2xl">
