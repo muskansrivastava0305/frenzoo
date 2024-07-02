@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 
-function Custom_Food() {
+function Custom_Food({setCustomFoodComp , item}) {
 
     const bigRef = useRef(null);
     const smallRef = useRef(null);
@@ -13,11 +13,16 @@ function Custom_Food() {
       }
     };
 
+    console.log(item)
+    function handleComp(){
+      setCustomFoodComp(false)
+    }
+
   return (
     <div className=" flex justify-center items-center w-full h-full fixed right-0 top-0">
         <div className=" bg-white w-[45rem]  mx-3 h-5/6 shadow-custom border rounded-3xl">
           <div>
-            <div className=" inline-block px-7 pt-3 text-gray-700 text-2xl"><i class="fa-solid fa-xmark"></i></div>
+            <button onClick={handleComp} className=" inline-block px-7 pt-3 text-gray-700 text-2xl"><i className="fa-solid fa-xmark"></i></button>
             <div className=" w-full flex justify-center text-lg font-semibold text-gray-600">
               Custom Food
             </div>
@@ -26,14 +31,14 @@ function Custom_Food() {
             <div className=" flex gap-2 ">
               <div className=" w-28 h-28">
                 <img
-                  src="https://frenzoo.qrdine-in.com/storage/app/public/product/2024-06-14-666bcf320f77b.png"
+                  src={item.img}
                   alt="product"
                 />
               </div>
               <div>
-                <div className=" font-semibold ">Khata mitha</div>
+                <div className=" font-semibold ">{item.name}</div>
                 <div className=" text-gray-400 text-sm">
-                  Lorem ipsum dolor sit amet.
+                  {item.description}
                 </div>
               </div>
             </div>

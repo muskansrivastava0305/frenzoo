@@ -5,10 +5,12 @@ import {
   incrementProduct,
   decrementProduct,
 } from "../../../Redux/Freatures/User/cartSlice";
+import { Custom_Food } from "../../../components/user";
 
 const ProductAccordion = ({ category, products }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [expandedProducts, setExpandedProducts] = useState({});
+  const [ isCustomFoodComp , setCustomFoodComp] =  useState(false)
   const contentRef = useRef(null);
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cart.products);
@@ -28,6 +30,7 @@ const ProductAccordion = ({ category, products }) => {
   }, [isOpen]);
 
   const handleAddProduct = (product) => {
+    // setCustomFoodComp(true)
     dispatch(addProduct(product));
   };
 
@@ -52,6 +55,7 @@ const ProductAccordion = ({ category, products }) => {
     }
     return description.substring(0, 20) + "...";
   };
+
 
   return (
     products.length > 0 && (
@@ -122,11 +126,11 @@ const ProductAccordion = ({ category, products }) => {
                     {productInCart ? (
                       <div className="border-[#ff8e2f] flex gap-4 justify-center items-center text-[#ff8e2f] rounded-md border px-4 py-2">
                         <button onClick={() => handleDecrement(item.id)}>
-                          <i class="fa-solid fa-minus"></i>
+                          <i className="fa-solid fa-minus"></i>
                         </button>
                         <div>{productInCart.quantity}</div>
                         <button onClick={() => handleIncrement(item.id)}>
-                          <i class="fa-solid fa-plus"></i>
+                          <i className="fa-solid fa-plus"></i>
                         </button>
                       </div>
                     ) : (
@@ -139,6 +143,9 @@ const ProductAccordion = ({ category, products }) => {
                       </button>
                     )}
                   </div>
+                {
+                  isCustomFoodComp && <Custom_Food item={item} setCustomFoodComp={setCustomFoodComp}/>
+                }
                 </div>
               </div>
             );

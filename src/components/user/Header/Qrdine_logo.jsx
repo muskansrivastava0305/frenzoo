@@ -19,7 +19,7 @@ function Qrdine_logo() {
           <div className=" absolute bottom-0 bg-[#ffffff1a] rounded-md w-[20rem] sm:w-[25rem] pt-2 px-3">
             <div className=" pb-4">
               <div className=" font-semibold text-[13px] sm:text-md text-white">Pind Balluchi</div>
-              <div className=" text-sm text-gray-400">Noida</div>
+              <div className=" text-sm text-gray-400">CP</div>
             </div>
           </div>
         </div>
