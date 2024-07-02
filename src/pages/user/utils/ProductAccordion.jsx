@@ -6,23 +6,15 @@ import {
   decrementProduct,
 } from "../../../Redux/Freatures/User/cartSlice";
 
-const ProductAccordion = ({ name , image , category ,price, content, id }) => {
+const ProductAccordion = ({ category, products }) => {
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef(null);
-  const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cart.products);
-
-  const handleToggle = () => {
-    setIsExpanded(!isExpanded);
-  };
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
-
-  const fullText = content
-  const truncatedText = `${content}...`;
 
   useEffect(() => {
     if (contentRef.current) {
@@ -34,36 +26,26 @@ const ProductAccordion = ({ name , image , category ,price, content, id }) => {
     }
   }, [isOpen]);
 
-  const data = {
-    id,
-    image,
-    name,
-    price,
-    content,
-    category
+  const handleAddProduct = (product) => {
+    dispatch(addProduct(product));
   };
 
-  const handleAddProduct = () => {
-    dispatch(addProduct(data));
+  const handleIncrement = (id) => {
+    dispatch(incrementProduct({ id }));
   };
 
-  const handleIncrement = () => {
-    dispatch(incrementProduct({ id: id }));
+  const handleDecrement = (id) => {
+    dispatch(decrementProduct({ id }));
   };
-
-  const handleDecrement = () => {
-    dispatch(decrementProduct({ id: id }));
-  };
-
-  const productInCart = cartProducts.find((product) => product.id === id);
 
   return (
-    <div className="border-b border-gray-200">
+    products.length > 0 && (
+      <div className="border-b border-gray-200">
       <div
         className="flex justify-between items-center py-6 cursor-pointer"
         onClick={toggleAccordion}
       >
-        <h2 className="text-sm text-gray-600">{category}</h2>
+        <h2 className="text-sm font-semibold flex gap-1 text-gray-600">{category}<div>({products.length})</div></h2>
         <span>
           {isOpen ? (
             <i className="fa-solid fa-angle-up"></i>
@@ -77,55 +59,57 @@ const ProductAccordion = ({ name , image , category ,price, content, id }) => {
         className="overflow-hidden transition-height duration-300 ease-in-out"
         style={{ height: "0px" }}
       >
-        <div className="flex justify-between">
-          <div className="w-full mr-6">
-            <div className="border-b border-dashed border-b-gray-300">
-              <div className="pb-1">
-                <img
-                  src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
-                  alt="category"
-                />
-              </div>
-              <div className="font-semibold">{name}</div>
-              <div className="text-[#ff8e2f] font-semibold pb-7">₹ {price}</div>
-            </div>
-            <div className="flex flex-wrap text-[12px] mt-1 text-gray-500">
-              <div>{isExpanded ? fullText : truncatedText}</div>
-              <button
-                onClick={handleToggle}
-                className="text-[#ff8e2f] mb-2 text-sm"
-              >
-                {isExpanded ? "Show less" : "Read more"}
-              </button>
-            </div>
-          </div>
-          <div className="w-36 h-36 rounded-md">
-            <img
-              className="overflow-auto w-full rounded-md"
-              src={image}
-              alt=""
-            />
-            <div className="flex justify-center">
-              {productInCart ? (
-                <div className="border-[#ff8e2f] flex gap-3 justify-center items-center text-[#ff8e2f] rounded-md border px-4 py-2 mt-2 mb-8">
-                  <button onClick={handleDecrement}>-</button>
-                  <div>{productInCart.quantity}</div>
-                  <button onClick={handleIncrement}>+</button>
+        {products.map((item) => {
+          const productInCart = cartProducts.find((product) => product.id === item.id);
+          return (
+            <div key={item.id} className="flex justify-between mb-8">
+              <div className="w-full mr-6">
+                <div className="border-b border-dashed border-b-gray-300 pb-4">
+                  <div className="pb-1">
+                    <img
+                      src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
+                      alt="category"
+                    />
+                  </div>
+                  <div className="font-semibold">{item.name}</div>
+                  <div className="text-[#ff8e2f] font-semibold">₹ {item.price}</div>
                 </div>
-              ) : (
-                <button
-                  onClick={handleAddProduct}
-                  className="border-[#ff8e2f] flex gap-1 justify-center items-center text-[#ff8e2f] rounded-md border px-6 py-2 mt-2 mb-8"
-                >
-                  <i className="fa-solid fa-plus"></i>
-                  <div>Add</div>
-                </button>
-              )}
+                <div className="flex flex-wrap text-[12px] mt-1 text-gray-500">
+                  <div>{item.description}</div>
+                </div>
+              </div>
+              <div className="w-36 h-36 rounded-md">
+                <img
+                  className="overflow-auto w-full rounded-md"
+                  src={item.img}
+                  alt=""
+                />
+                <div className="flex justify-center mt-2">
+                  {productInCart ? (
+                    <div className="border-[#ff8e2f] flex gap-4 justify-center items-center text-[#ff8e2f] rounded-md border px-4 py-2">
+                      <button onClick={() => handleDecrement(item.id)}><i class="fa-solid fa-minus"></i></button>
+                      <div>{productInCart.quantity}</div>
+                      <button onClick={() => handleIncrement(item.id)}><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        handleAddProduct(item)
+                      }
+                      className="border-[#ff8e2f] flex gap-1 justify-center items-center text-[#ff8e2f] rounded-md border px-6 py-2"
+                    >
+                      <i className="fa-solid fa-plus"></i>
+                      <div>Add</div>
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
+    )
   );
 };
 
