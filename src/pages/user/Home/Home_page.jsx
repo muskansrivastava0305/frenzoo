@@ -43,7 +43,7 @@ function Home_page({ children }) {
 
       <div className=" w-full justify-center flex px-4">
         {!item && (
-          <div className=" mt-16 mb-[5rem] w-[34rem] lg:w-[40rem]">
+          <div className=" mt-[5%] mb-[5rem] w-[34rem] lg:w-[40rem]">
             {children}
           </div>
         )}
