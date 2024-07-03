@@ -8,7 +8,7 @@ import {
 import { Custom_Food } from "../../../components/user";
 
 const ProductAccordion = ({ category, products }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [expandedProducts, setExpandedProducts] = useState({});
   const [isCustomFoodComp, setCustomFoodComp] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
