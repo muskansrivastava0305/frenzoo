@@ -99,8 +99,8 @@ function Home_page_content() {
           </div>
           {cart.length > 0 && (
             <Bottom_cart_comp
-              price={price}
-              item={totalCount}
+              // price={price}
+              // item={totalCount}
               action="View Cart"
               to="/cart_items"
             />

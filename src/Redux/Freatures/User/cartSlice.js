@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    products: []
+    products: [],
+    cookingInstruction:''
 };
 
 const cartReducer = createSlice({
@@ -31,11 +32,15 @@ const cartReducer = createSlice({
             } else if (product && product.quantity === 1) {
                 state.products = state.products.filter(product => product.id !== action.payload.id);
             }
+        },
+
+        addCookingInstruction: (state, action) => {
+            state.cookingInstruction = action.payload
         }
     }
 });
 
-export const { addProduct, incrementProduct, decrementProduct } = cartReducer.actions;
+export const { addProduct, incrementProduct, decrementProduct, addCookingInstruction } = cartReducer.actions;
 
 export const selectTotalPrice = state => {
     return state.cart.products.reduce((total, product) => total + product.price * product.quantity, 0);
