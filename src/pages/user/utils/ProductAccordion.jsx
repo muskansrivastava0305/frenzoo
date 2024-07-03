@@ -130,7 +130,7 @@ const ProductAccordion = ({ category, products }) => {
                   />
                   <div className="flex justify-center mt-2">
                     {productInCart ? (
-                      <div className="border-[#ff8e2f] flex gap-4 justify-center items-center text-[#ff8e2f] rounded-md border px-4 py-2">
+                      <div className="border-[#ff8e2f] w-[5.5rem] sm:w-[6.5rem] flex gap-4 justify-center items-center text-[#ff8e2f] rounded-md border px-4 py-2">
                         <button onClick={() => handleDecrement(item.id, item.size)}>
                           <i className="fa-solid fa-minus"></i>
                         </button>
