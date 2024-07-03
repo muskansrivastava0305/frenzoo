@@ -15,8 +15,8 @@ function CartPage() {
   const cookingIns = useSelector((state) => state.cart.cookingInstruction);
   const paymentMethod = useSelector((state) => state.cart.paymentMethod);
   const [expandedStates, setExpandedStates] = useState({});
-  const [selectedPayment, setSelectedPayment] = useState(paymentMethod ? paymentMethod :'');
-  const [cookingInstruction, setCookingInstruction] = useState(cookingIns ? cookingIns : "");
+  const [selectedPayment, setSelectedPayment] = useState(paymentMethod || '');
+  const [cookingInstruction, setCookingInstruction] = useState(cookingIns || "");
   const products = useSelector((state) => state.cart.products);
   const totalAmount = useSelector(selectTotalPrice);
   const dispatch = useDispatch();
@@ -50,8 +50,10 @@ function CartPage() {
     }));
   };
 
-  function handleCookingInstruction() {
-    dispatch(addCookingInstruction(cookingInstruction));
+  function handleCookingInstruction(e) {
+    const instruction = e.target.value
+    setCookingInstruction(instruction)
+    dispatch(addCookingInstruction(instruction));
   }
 
   const getTruncatedDescription = (description) => {
@@ -153,7 +155,7 @@ function CartPage() {
             <input
               type="text"
               value={cookingInstruction}
-              onChange={(e) => setCookingInstruction(e.target.value)}
+              onInput={handleCookingInstruction}
               placeholder="Enter your cooking instruction here"
               className="border-none py-2 px-3 w-[16rem] sm:w-[18rem] placeholder:text-gray-700 placeholder:text-[13px] sm:placeholder:text-sm rounded-md mt-3"
             />
@@ -233,7 +235,7 @@ function CartPage() {
       <Bottom_cart_comp
         // price={totalAmount}
         // item={totalItems}
-        onClick={handleCookingInstruction}
+        // onClick={handleCookingInstruction}
         action="Proceed to Checkout"
         to="/preference"
       />
