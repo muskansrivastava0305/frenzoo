@@ -54,8 +54,6 @@ const products = [
 ];
 
 function Home_page_content() {
-  const price = useSelector(selectTotalPrice);
-  const totalCount = useSelector(selectTotalItemCount);
   const cart = useSelector((state) => state.cart.products);
 
   return (
