@@ -19,14 +19,15 @@ const MyComponent = () => {
 
   const handleNameChange = (e) => {
     const value = e.target.value;
+    if (/^[A-Za-z]*$/.test(value)) {
       setName(value);
-    if (value || mobileNumber) {
-      setIsCheckboxDisable(true);
-    } else {
-      setIsCheckboxDisable(false);
+      if (value || mobileNumber) {
+        setIsCheckboxDisable(true);
+      } else {
+        setIsCheckboxDisable(false);
+      }
+      setNameError(false);
     }
-    setNameError(false)
-
   };
 
   const handleMobileNumberChange = (e) => {
@@ -38,9 +39,8 @@ const MyComponent = () => {
       } else {
         setIsCheckboxDisable(false);
       }
+      setPhoneError(false);
     }
-    setPhoneError(false)
-
   };
 
   const handleAnonymous = () => {
@@ -49,17 +49,20 @@ const MyComponent = () => {
   };
 
   const handleOrder = () => {
-   if(checkboxRef.current.checked){
-    navigate('/place_order_successfully')
-   }else{
-    if (mobileNumber.length !== 10) {
-      setPhoneError(true);
-    } else if (name.length === 0 ) {
-      setNameError(true);
-    } else {
+    if (checkboxRef.current.checked) {
       navigate("/place_order_successfully");
+    } else {
+      if (name.length === 0) {
+        console.log(name.length)
+        setNameError(true);
+      } 
+      if (mobileNumber.length !== 10) {
+        setPhoneError(true);
+      }
+      else {
+        navigate("/place_order_successfully");
+      }
     }
-   }
   };
 
   return (
@@ -83,7 +86,7 @@ const MyComponent = () => {
               id="name"
             />
             {nameError && (
-              <p className=" text-sm text-red-500">Please enter your name</p>
+              <p className="text-sm text-red-500">Please enter your name</p>
             )}
           </div>
           <div className="mb-6">
@@ -104,7 +107,7 @@ const MyComponent = () => {
               id="mobileNumber"
             />
             {phoneError && (
-              <p className=" text-sm text-red-500">
+              <p className="text-sm text-red-500">
                 Please enter your 10 digits number
               </p>
             )}
