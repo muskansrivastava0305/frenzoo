@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     products: [],
-    cookingInstruction:''
+    cookingInstruction: '',
+    paymentMethod: ''
 };
 
 const cartReducer = createSlice({
@@ -36,11 +37,15 @@ const cartReducer = createSlice({
 
         addCookingInstruction: (state, action) => {
             state.cookingInstruction = action.payload
+        },
+
+        addPaymentMethod: (state, action) => {
+            state.paymentMethod = action.payload
         }
     }
 });
 
-export const { addProduct, incrementProduct, decrementProduct, addCookingInstruction } = cartReducer.actions;
+export const { addProduct, incrementProduct, decrementProduct, addCookingInstruction , addPaymentMethod } = cartReducer.actions;
 
 export const selectTotalPrice = state => {
     return state.cart.products.reduce((total, product) => total + product.price * product.quantity, 0);

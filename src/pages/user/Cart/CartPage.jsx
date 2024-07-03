@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
   addCookingInstruction,
+  addPaymentMethod,
   decrementProduct,
   incrementProduct,
   selectTotalItemCount,
@@ -11,23 +12,21 @@ import {
 } from "../../../Redux/Freatures/User/cartSlice";
 
 function CartPage() {
+  const cookingIns = useSelector((state) => state.cart.cookingInstruction);
+  const paymentMethod = useSelector((state) => state.cart.paymentMethod);
   const [expandedStates, setExpandedStates] = useState({});
-  const [cookingInstruction , setCookingInstruction] =  useState('')
+  const [selectedPayment, setSelectedPayment] = useState(paymentMethod ? paymentMethod :'');
+  const [cookingInstruction, setCookingInstruction] = useState(cookingIns ? cookingIns : "");
   const products = useSelector((state) => state.cart.products);
-  const cookingIns = useSelector((state)=> state.cart.cookingInstruction)
   const totalAmount = useSelector(selectTotalPrice);
-  const totalItems = useSelector(selectTotalItemCount);
   const dispatch = useDispatch();
   const PhonePeRef = useRef(null);
   const cashRef = useRef(null);
   const navigate = useNavigate();
 
-  const handlePayClick = (size) => {
-    if (size === "phonepe") {
-      PhonePeRef.current.checked = true;
-    } else if (size === "cash") {
-      cashRef.current.checked = true;
-    }
+  const handlePayClick = (method) => {
+    setSelectedPayment(method);
+    dispatch(addPaymentMethod(method));
   };
 
   const handleIncrement = (id) => {
@@ -51,9 +50,8 @@ function CartPage() {
     }));
   };
 
-  function handleCookingInstruction(){
-    console.log(cookingInstruction)
-dispatch(addCookingInstruction(cookingInstruction))
+  function handleCookingInstruction() {
+    dispatch(addCookingInstruction(cookingInstruction));
   }
 
   const getTruncatedDescription = (description) => {
@@ -63,6 +61,15 @@ dispatch(addCookingInstruction(cookingInstruction))
     }
     return description.substring(0, maxLength) + "...";
   };
+
+  useEffect(() => {
+    if(paymentMethod === 'phonepe'){
+      PhonePeRef.current.checked =  true
+    }else if(paymentMethod === 'cash'){
+      cashRef.current.checked =  true
+    }
+  }, [selectedPayment]);
+
 
   return (
     <div className="flex justify-center px-2 sm:px-4 w-full">
@@ -145,8 +152,8 @@ dispatch(addCookingInstruction(cookingInstruction))
           <div>
             <input
               type="text"
-              value={cookingInstruction || cookingIns}
-              onChange={(e)=> setCookingInstruction(e.target.value)}
+              value={cookingInstruction}
+              onChange={(e) => setCookingInstruction(e.target.value)}
               placeholder="Enter your cooking instruction here"
               className="border-none py-2 px-3 w-[16rem] sm:w-[18rem] placeholder:text-gray-700 placeholder:text-[13px] sm:placeholder:text-sm rounded-md mt-3"
             />
