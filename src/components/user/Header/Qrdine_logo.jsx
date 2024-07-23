@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 function Qrdine_logo({restaurantInfo}) {
  
-  console.log(restaurantInfo)
+  console.log(restaurantInfo.detail?.image_url)
   return (
     <>
       <div>
@@ -11,7 +11,7 @@ function Qrdine_logo({restaurantInfo}) {
           <div className=" w-[12rem] sm:w-[13rem] flex justify-center items-center">
             <img
               className=" h-full w-full"
-              src="https://pindballuchi.com/wp-content/uploads/2024/02/Logo-1-removebg-preview.png"
+              src={restaurantInfo.detail?.image_url}
               alt="logo"
             />
           </div>

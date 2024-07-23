@@ -6,7 +6,6 @@ function Home_page({ children , restaurantInfo}) {
   const [message, setMessage] = useState("");
 
  
-  console.log(item)
   useEffect(() => {
     const updateMessage = () => {
       const currentHour = new Date().getHours();
