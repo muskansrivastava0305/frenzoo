@@ -125,7 +125,7 @@ const ProductAccordion = ({ category, products }) => {
                 <div className="w-36 h-36 rounded-md">
                   <img
                     className="overflow-auto w-full rounded-md"
-                    src={item.img}
+                    src={item.image_url}
                     alt=""
                   />
                   <div className="flex justify-center mt-2">

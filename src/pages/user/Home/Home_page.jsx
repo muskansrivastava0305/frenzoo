@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Qrdine_logo, Search_bar } from "../../../components/user";
+import { Qrdine_logo } from "../../../components/user";
 
-function Home_page({ children }) {
-  const [item, setItem] = useState(true);
+function Home_page({ children , restaurantInfo}) {
+  const [item, setItem] = useState(restaurantInfo.status);
   const [message, setMessage] = useState("");
 
+ 
+  console.log(item)
   useEffect(() => {
     const updateMessage = () => {
       const currentHour = new Date().getHours();
@@ -18,6 +20,8 @@ function Home_page({ children }) {
       }
     };
 
+    setItem(restaurantInfo.status);
+
     updateMessage();
 
     // Optionally, you can set an interval to update the message every minute
@@ -25,31 +29,29 @@ function Home_page({ children }) {
 
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
-  }, []);
+  }, [restaurantInfo.status]);
+
+
 
   return (
     <div>
-      <Qrdine_logo />
+      <Qrdine_logo restaurantInfo={restaurantInfo} />
       <div>
         <div className=" text-3xl md:text-4xl pb-3  pt-3 sm:pt-4 text-orange-400 font-semibold text-center">
           {message}
         </div>
-        {item && (
-          <Search_bar/>
-        )}
       </div>
-
       {!item && (
         <div className=" flex w-full justify-center">
           <div className=" py-8 px-11 bg-white shadow-custom text-xl w-[37rem] text-center mt-20 rounded-3xl">
-            Please sacn the QR code first to access the main menu. thank you.
+            Please scan the QR code first to access the main menu. thank you.
           </div>
         </div>
       )}
 
       <div className=" w-full justify-center flex px-4">
         {item && (
-          <div className=" mt-[5%] mb-[5rem] w-[34rem] lg:w-[40rem]">
+          <div className=" mt-[2%] mb-[5rem] w-[34rem] lg:w-[40rem]">
             {children}
           </div>
         )}

@@ -1,8 +1,10 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from "react";
 
 function Custom_Food({ setCustomFoodComp, product, onAddProduct }) {
   const bigRef = useRef(null);
   const smallRef = useRef(null);
+  const AddonRef = useRef(null);
+  const ExtrasRef = useRef(null);
 
   // Set default size and price here
   const defaultSize = "big"; // change to "small" if you want the small size to be default
@@ -17,6 +19,7 @@ function Custom_Food({ setCustomFoodComp, product, onAddProduct }) {
     } else if (defaultSize === "small") {
       smallRef.current.checked = true;
     }
+
   }, [defaultSize]);
 
   const handleDivClick = (size, price) => {
@@ -40,11 +43,29 @@ function Custom_Food({ setCustomFoodComp, product, onAddProduct }) {
     setCustomFoodComp(false);
   };
 
+  function handleAddon() {
+    if (AddonRef.current.checked) {
+      AddonRef.current.checked = false;
+    } else {
+      AddonRef.current.checked = true;
+    }
+  }
+
+  function handleExtras() {
+    if (ExtrasRef.current.checked) {
+      ExtrasRef.current.checked = false;
+    } else {
+      ExtrasRef.current.checked = true;
+    }
+  }
   return (
-    <div className="flex justify-center bg-[#000000cc] items-center w-full h-full fixed right-0 top-0">
+    <div className="flex justify-center z-50 bg-[#000000cc] items-center w-full h-full fixed right-0 top-0">
       <div className="bg-white w-[45rem] mx-3 h-fit shadow-custom border rounded-3xl">
         <div>
-          <button onClick={handleClose} className="inline-block px-7 pt-3 text-gray-700 text-2xl">
+          <button
+            onClick={handleClose}
+            className="inline-block px-7 pt-3 text-gray-700 text-2xl"
+          >
             <i className="fa-solid fa-xmark"></i>
           </button>
           <div className="w-full flex justify-center text-lg font-semibold text-gray-600">
@@ -53,8 +74,8 @@ function Custom_Food({ setCustomFoodComp, product, onAddProduct }) {
         </div>
         <div className="px-8 py-8">
           <div className="flex gap-2">
-            <div className="w-28 h-28">
-              <img src={product.img} alt="product" />
+            <div className="w-28 h-28 rounded-md overflow-hidden">
+              <img src={product.image_url} alt="product" />
             </div>
             <div>
               <div className="font-semibold">{product.name}</div>
@@ -70,7 +91,13 @@ function Custom_Food({ setCustomFoodComp, product, onAddProduct }) {
               <div>Big</div>
               <div className="flex gap-5">
                 <label htmlFor="">₹ 549</label>
-                <input type="radio" name="size" value="1" ref={bigRef} id="big" />
+                <input
+                  type="radio"
+                  name="size"
+                  value="1"
+                  ref={bigRef}
+                  id="big"
+                />
               </div>
             </div>
             <div
@@ -80,15 +107,54 @@ function Custom_Food({ setCustomFoodComp, product, onAddProduct }) {
               <div>Small</div>
               <div className="flex gap-5">
                 <label htmlFor="">₹ 20</label>
-                <input type="radio" name="size" value="2" ref={smallRef} id="small" />
+                <input
+                  type="radio"
+                  name="size"
+                  value="2"
+                  ref={smallRef}
+                  id="small"
+                />
               </div>
             </div>
+          </div>
+          <div className=" w-full border-b pb-3 border-dashed border-b-gray-300">
+            <div className=" font-semibold">Addons</div>
+            <button
+              onClick={handleAddon}
+              className=" w-full pt-3 flex justify-between"
+            >
+              <div>Fries And Cola Drink</div>
+              <div className=" flex gap-5">
+                <div>₹ 149</div>
+                <div>
+                  <input ref={AddonRef} type="checkbox" />
+                </div>
+              </div>
+            </button>
+          </div>
+          <div className=" border-b border-dashed border-b-gray-300 py-3 mb-3 w-full">
+            <div className=" font-semibold">Extras</div>
+            <button
+              onClick={handleExtras}
+              className=" w-full pt-3 flex justify-between"
+            >
+              <div>Fries And Cola Drink</div>
+              <div className=" flex gap-5">
+                <div>₹ 149</div>
+                <div>
+                  <input ref={ExtrasRef} type="checkbox" />
+                </div>
+              </div>
+            </button>
           </div>
           <div className="flex justify-between mb-7">
             <div className="font-semibold text-gray-700">Grand Total</div>
             <div className="pr-7 font-semibold text-orange-500">₹ {price}</div>
           </div>
-          <div className="bg-orange-400 text-white text-center p-2 rounded-lg mt-8 cursor-pointer" onClick={handleApply}>
+          <div
+            className="bg-orange-400 text-white text-center p-2 rounded-lg mt-8 cursor-pointer"
+            onClick={handleApply}
+          >
             Apply
           </div>
         </div>

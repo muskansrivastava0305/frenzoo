@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-function Qrdine_logo() {
+function Qrdine_logo({restaurantInfo}) {
  
+  console.log(restaurantInfo)
   return (
     <>
       <div>
@@ -18,8 +19,8 @@ function Qrdine_logo() {
         <div className=" sm:pt-[9rem] flex justify-center items-center">
           <div className=" absolute bottom-0 bg-[#ffffff1a] rounded-md w-[20rem] sm:w-[25rem] pt-2 px-3">
             <div className=" pb-4">
-              <div className=" font-semibold text-[13px] sm:text-md text-white">Pind Balluchi</div>
-              <div className=" text-sm text-gray-400">CP</div>
+              <div className=" font-semibold text-[13px] sm:text-md text-white">{restaurantInfo && restaurantInfo.detail ? restaurantInfo.detail?.name : " "}</div>
+              <div className=" text-sm text-gray-400">{restaurantInfo && restaurantInfo.detail ? restaurantInfo.detail?.address : " "}</div>
             </div>
           </div>
         </div>
