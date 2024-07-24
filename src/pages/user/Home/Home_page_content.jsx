@@ -2,63 +2,126 @@ import React, { useEffect, useState } from "react";
 import Home_page from "./Home_page";
 import ProductAccordion from "../utils/ProductAccordion";
 import { Bottom_cart_comp, Search_bar } from "../../../components/user";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  addTableAndBranch,
   selectTotalItemCount,
   selectTotalPrice,
 } from "../../../Redux/Freatures/User/cartSlice";
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
+import DisplayCard from "../utils/DisplayCard";
 
 function Home_page_content() {
   const cart = useSelector((state) => state.cart.products);
   const [category, setCategory] = useState({});
+  const dispach = useDispatch();
   const [searchParams] = useSearchParams();
-  const [search , setSearch] = useState("")
+  const [search, setSearch] = useState("");
+  const [product_type, setProductType] = useState("");
+  const [bestSeller , setBestSeller] = useState("")
   const table = searchParams.get("table");
   const branchId = searchParams.get("branch_id");
+  const [expandedProducts, setExpandedProducts] = useState({});
 
   async function getTableData() {
     await axios
       .get(
-        `https://frenzoo.qrdine-in.com/degitalmenuapi?table=${table}&branch_id=${branchId}&search=${search}`
+        `https://frenzoo.qrdine-in.com/degitalmenuapi?table=${table}&branch_id=${branchId}&search=${search}&product_type=${product_type}&set_menu=${bestSeller}`
       )
       .then((res) => {
         setCategory(res.data);
       });
   }
 
+  dispach(addTableAndBranch({ table, branchId }));
   useEffect(() => {
     getTableData();
-  }, [search]);
+  }, [search, product_type , bestSeller]);
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+    setExpandedProducts({});
+  };
 
   return (
     <Home_page restaurantInfo={category}>
-      {category.status !== 'Booked' ? (
+      {category.status !== "Booked" ? (
         <>
-          <Search_bar onChange={(e)=> setSearch(e.target.value)}/>
-          <div className=" w-full mt-10 flex justify-start gap-3 sm:gap-7 pb-5">
-            <button className=" flex justify-center items-center border rounded-md text-[13px] sm:text-sm gap-2 px-1 sm:px-2 border-[#f5f5f5]">
-              <img
-                src="https://frenzoo.qrdine-in.com/public/assets/images/icons/veg.svg"
-                alt="veg"
-              />
-              Veg
-            </button>
-            <button className=" flex justify-center items-center border rounded-md text-sm gap-2 p-2 border-[#f5f5f5]">
-              <img
-                src="https://frenzoo.qrdine-in.com/public/assets/images/svg/nonveg.svg"
-                alt="veg"
-              />
-              Veg
-            </button>
-            <button className=" flex justify-center items-center border rounded-md text-sm gap-2 p-2 border-[#f5f5f5]">
+          <Search_bar onChange={(e) => handleSearchChange(e)} />
+          <div className=" w-full mt-10 flex justify-between items-center gap-3 sm:gap-7 pb-5">
+            <div className=" flex gap-3">
+              {product_type === "veg" ? (
+                <button
+                  onClick={() => setProductType("veg")}
+                  className=" flex justify-center items-center border rounded-md text-[13px] sm:text-sm gap-2 px-1 sm:px-2 bg-[#ffe395]  border-[#ffe395]"
+                >
+                  <img
+                    src="https://frenzoo.qrdine-in.com/public/assets/images/icons/veg.svg"
+                    alt="veg"
+                  />
+                  Veg
+                </button>
+              ) : (
+                <button
+                  onClick={() => setProductType("veg")}
+                  className="  flex justify-center items-center border rounded-md text-[13px] sm:text-sm gap-2 px-1 sm:px-2 border-[#f5f5f5]"
+                >
+                  <img
+                    src="https://frenzoo.qrdine-in.com/public/assets/images/icons/veg.svg"
+                    alt="veg"
+                  />
+                  Veg
+                </button>
+              )}
+              {product_type === "non_veg" ? (
+                <button
+                  onClick={() => setProductType("non_veg")}
+                  className=" flex justify-center items-center border rounded-md text-sm gap-2 p-2 bg-[#ffe395]  border-[#ffe395]"
+                >
+                  <img
+                    src="https://frenzoo.qrdine-in.com/public/assets/images/svg/nonveg.svg"
+                    alt="veg"
+                  />
+                  Non Veg
+                </button>
+              ) : (
+                <button
+                  onClick={() => setProductType("non_veg")}
+                  className=" flex justify-center items-center border rounded-md text-sm gap-2 p-2 border-[#f5f5f5]"
+                >
+                  <img
+                    src="https://frenzoo.qrdine-in.com/public/assets/images/svg/nonveg.svg"
+                    alt="veg"
+                  />
+                  Non Veg
+                </button>
+              )}
+             {  
+              <button onClick={()=> setBestSeller("0")} className=" flex justify-center items-center border rounded-md text-sm gap-2 p-2 border-[#f5f5f5]">
               <img
                 src="https://frenzoo.qrdine-in.com/public/assets/images/icons/veg.svg"
                 alt="veg"
               />
               Best Seller
             </button>
+             }
+            </div>
+            <div>
+            {
+              product_type && (
+                <button
+                  onClick={() => {
+                    setProductType("")
+                    setBestSeller("")
+                  }}
+                  className=" flex justify-center py-2 items-center border rounded-md text-[13px] sm:text-sm gap-2 px-1 sm:px-2 bg-white"
+                >
+                  Clear filter<i class="fa-solid fa-xmark"></i>
+              </button>
+              )
+            }
+            </div>
           </div>
           <div className="w-full relative">
             <div className="flex justify-start flex-col border-t border-t-gray-200">
@@ -72,6 +135,8 @@ function Home_page_content() {
                         key={item.categoryname}
                         category={item.categoryname}
                         products={item.products}
+                        expandedProducts={expandedProducts}
+                        setExpandedProducts={setExpandedProducts}
                       />
                     ))
                   : null}
@@ -88,10 +153,10 @@ function Home_page_content() {
           </div>
         </>
       ) : (
-        <div className=" flex w-full justify-center">
-          <div className=" py-8 px-11 bg-white shadow-custom text-xl w-[37rem] text-center mt-20 rounded-3xl">
-          The Table is not empty this Time Beacuse Order is Already Exists in this table.          </div>
-        </div>
+        <DisplayCard>
+          The Table is not empty this Time Beacuse Order is Already Exists in
+          this table.
+        </DisplayCard>
       )}
     </Home_page>
   );

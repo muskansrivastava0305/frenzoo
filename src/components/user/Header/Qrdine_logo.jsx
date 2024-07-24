@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 
 function Qrdine_logo({restaurantInfo}) {
  
-  console.log(restaurantInfo.detail?.image_url)
   return (
     <>
       <div>
       <div className=" relative h-[30vh] sm:h-[40vh] bg-no-repeat bg-cover bg-center px-3 sm:px-5 py-3 sm:py-4 flex-col bg-homeImage ">
         <div className=" w-full justify-center items-center flex">
-          <div className=" w-[12rem] sm:w-[13rem] flex justify-center items-center">
+          <div className=" w-[6rem] flex justify-center items-center">
             <img
               className=" h-full w-full"
               src={restaurantInfo.detail?.image_url}

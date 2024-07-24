@@ -4,8 +4,11 @@ import { Link } from 'react-router-dom'
 import { selectTotalItemCount, selectTotalPrice } from '../../../Redux/Freatures/User/cartSlice'
 
 function Bottom_cart_comp({ action , to , onClick}) {
+  const { table, branch_id } = useSelector((state) => state.cart);
   const totalAmount =  useSelector(selectTotalPrice)
   const totalCount = useSelector(selectTotalItemCount)
+
+  let tableAndBranch = `table=${table}&branch_id=${branch_id}`;
 
 
   return (
@@ -14,7 +17,7 @@ function Bottom_cart_comp({ action , to , onClick}) {
       <div className=" font-semibold text-orange-400">₹ {Number(totalAmount)}</div>
       <div className=" text-sm  text-white"> {totalCount} item added</div>
     </div>
-    <Link to={to} className=" bg-orange-400 p-2 flex justify-center items-center text-white rounded-md text-sm">{action}</Link>
+    <Link to={`${to}?${tableAndBranch}`} className=" bg-orange-400 p-2 flex justify-center items-center text-white rounded-md text-sm">{action}</Link>
   </button>
   )
 }

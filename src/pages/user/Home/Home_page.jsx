@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Qrdine_logo } from "../../../components/user";
+import DisplayCard from "../utils/DisplayCard";
 
 function Home_page({ children , restaurantInfo}) {
   const [item, setItem] = useState(restaurantInfo.status);
@@ -41,11 +42,9 @@ function Home_page({ children , restaurantInfo}) {
         </div>
       </div>
       {!item && (
-        <div className=" flex w-full justify-center">
-          <div className=" py-8 px-11 bg-white shadow-custom text-xl w-[37rem] text-center mt-20 rounded-3xl">
+        <DisplayCard>
             Please scan the QR code first to access the main menu. thank you.
-          </div>
-        </div>
+        </DisplayCard>
       )}
 
       <div className=" w-full justify-center flex px-4">

@@ -134,6 +134,7 @@ const MyComponent = () => {
       <Bottom_cart_comp
         // price="100.00"
         // item="1"
+        to="/place_order_successfully"
         action="Proceed"
         onClick={handleOrder}
       />

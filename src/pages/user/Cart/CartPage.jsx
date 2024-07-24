@@ -14,6 +14,7 @@ import {
 function CartPage() {
   const cookingIns = useSelector((state) => state.cart.cookingInstruction);
   const paymentMethod = useSelector((state) => state.cart.paymentMethod);
+  const {table , branch_id} = useSelector(state => state.cart)
   const [expandedStates, setExpandedStates] = useState({});
   const [selectedPayment, setSelectedPayment] = useState(paymentMethod || '');
   const [cookingInstruction, setCookingInstruction] = useState(cookingIns || "");
@@ -39,7 +40,7 @@ function CartPage() {
 
   useEffect(() => {
     if (!products.length) {
-      navigate("/");
+      navigate(`/?table=${table}&branch_id=${branch_id}`);
     }
   }, [products.length, navigate]);
 
