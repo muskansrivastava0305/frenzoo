@@ -4,20 +4,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
   addCookingInstruction,
+  addonDecrement,
+  addonIncrement,
   addPaymentMethod,
   decrementProduct,
   incrementProduct,
   selectTotalItemCount,
   selectTotalPrice,
 } from "../../../Redux/Freatures/User/cartSlice";
+import Choice_comp from "../../../components/user/utils/Choice_comp";
 
 function CartPage() {
   const cookingIns = useSelector((state) => state.cart.cookingInstruction);
   const paymentMethod = useSelector((state) => state.cart.paymentMethod);
-  const {table , branch_id} = useSelector(state => state.cart)
+  const { table, branch_id } = useSelector((state) => state.cart);
   const [expandedStates, setExpandedStates] = useState({});
-  const [selectedPayment, setSelectedPayment] = useState(paymentMethod || '');
-  const [cookingInstruction, setCookingInstruction] = useState(cookingIns || "");
+  const [selectedPayment, setSelectedPayment] = useState(paymentMethod || "");
+  const [cookingInstruction, setCookingInstruction] = useState( cookingIns || "" );
+  const [isOpen , setIsOpen] =  useState(false)
+  const [isTrue , setIsTrue] =  useState(false)
+  const [currentProductId, setCurrentProductId] = useState(null);
   const products = useSelector((state) => state.cart.products);
   const totalAmount = useSelector(selectTotalPrice);
   const dispatch = useDispatch();
@@ -30,13 +36,33 @@ function CartPage() {
     dispatch(addPaymentMethod(method));
   };
 
-  const handleIncrement = (id) => {
-    dispatch(incrementProduct({ id }));
+  
+  const OnIncrementProduct = (productId,choice) =>{
+    if(choice){
+      dispatch(incrementProduct({ id:productId , choice}))
+    }else{
+      dispatch(incrementProduct({id:productId, choice }))
+    }
+    setIsTrue(false)
+  }
+
+  const handleIncrement = (productId , itemId , type) => {
+    if(type=='product'){
+      setCurrentProductId(productId);
+      setIsOpen(true)
+    }else{
+      dispatch(addonIncrement({productId, itemId}))
+    }
   };
 
-  const handleDecrement = (id) => {
-    dispatch(decrementProduct({ id }));
+  const handleDecrement = (productId , itemId , type) => {
+    if(type=='product'){
+      dispatch(decrementProduct({ id:productId }));
+    }else{
+      dispatch(addonDecrement({productId , itemId}))
+    }
   };
+
 
   useEffect(() => {
     if (!products.length) {
@@ -52,8 +78,8 @@ function CartPage() {
   };
 
   function handleCookingInstruction(e) {
-    const instruction = e.target.value
-    setCookingInstruction(instruction)
+    const instruction = e.target.value;
+    setCookingInstruction(instruction);
     dispatch(addCookingInstruction(instruction));
   }
 
@@ -66,13 +92,12 @@ function CartPage() {
   };
 
   useEffect(() => {
-    if(paymentMethod === 'phonepe'){
-      PhonePeRef.current.checked =  true
-    }else if(paymentMethod === 'cash'){
-      cashRef.current.checked =  true
+    if (paymentMethod === "phonepe") {
+      PhonePeRef.current.checked = true;
+    } else if (paymentMethod === "cash") {
+      cashRef.current.checked = true;
     }
   }, [selectedPayment]);
-
 
   return (
     <div className="flex justify-center px-2 sm:px-4 w-full">
@@ -81,63 +106,125 @@ function CartPage() {
           Frenzoo Cafe & Restaurant
         </div>
         <div className="font-semibold mt-8">Food Items</div>
-        <div className=" shadow-custom">
+        <div className=" shadow-custom px-2 sm:px-4">
           {products &&
-            products.map((product) => (
-              <div
-                key={product.id}
-                className="flex justify-between gap-2 mt-4 items-start px-2 sm:px-4 py-4"
-              >
-                <div className="flex w-[40%] items-start gap-1 sm:gap-2">
-                  <img
-                    className="pt-1"
-                    src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
-                    alt=""
-                  />
-                  <div>
-                    <div className="text-gray-800 text-sm sm:text-lg font-semibold">
-                      {product.name}
-                    </div>
-                    <div className=" flex flex-wrap gap-1">
-                      <div
-                        className={`text-sm text-gray-500 ${
-                          expandedStates[product.id] ? "block" : "hidden"
-                        }`}
-                      >
-                        {product.description}
+            products.map((product, index) => (
+              <div key={index}>
+                <div
+                  
+                  className="flex justify-between gap-2 mt-4 items-start py-4"
+                >
+                  {/* product info */}
+                  <div className="flex w-[40%] items-start gap-1 sm:gap-2">
+                    <img
+                      className="pt-1"
+                      src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
+                      alt=""
+                    />
+                    <div>
+                      <div className="text-gray-800 text-sm sm:text-lg font-semibold">
+                        {product.name}
                       </div>
-                      {!expandedStates[product.id] && (
-                        <div className="text-sm text-gray-500">
-                          {getTruncatedDescription(product.description)}
+                      <div className=" flex flex-wrap gap-1">
+                        <div
+                          className={`text-sm text-gray-500 ${
+                            expandedStates[product.id] ? "block" : "hidden"
+                          }`}
+                        >
+                          {product.description}
                         </div>
-                      )}
-                      <button
-                        onClick={() => handleToggle(product.id)}
-                        className="text-[#ff8e2f] text-sm"
+                        {!expandedStates[product.id] && (
+                          <div className="text-sm text-gray-500">
+                            {getTruncatedDescription(product.description)}
+                          </div>
+                        )}
+                        <button
+                          onClick={() => handleToggle(product.id)}
+                          className="text-[#ff8e2f] text-sm"
+                        >
+                          {expandedStates[product.id]
+                            ? "Show less"
+                            : "Read more"}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  {/* increment decrement */}
+                  <div className="flex w-[50%] justify-between items-center gap-4 sm:gap-8">
+                    <div>
+                      <div className="flex w-[5.1rem] border gap-3 sm:gap-3 rounded-md border-orange-400 justify-between items-center text-orange-400 px-2 py-1">
+                        <button onClick={() => handleDecrement(product.id , undefined , "product")}>
+                          <i className="fa-solid fa-minus"></i>
+                        </button>
+                        <div>{product.quantity}</div>
+                        <button onClick={() => handleIncrement(product.id , undefined ,"product")}>
+                          <i className="fa-solid fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-orange-400 text-sm sm:text-[1rem] font-semibold">
+                        ₹ {product.price * product.quantity}.00
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {isOpen && currentProductId === product.id && (
+                  <Choice_comp
+                    setIsOpen={setIsOpen}
+                    OnIncrementProduct={OnIncrementProduct}
+                    isTrue={isTrue}
+                    setIsTrue={setIsTrue}
+                    productId={currentProductId}
+                  />
+        )}
+                {/* addons and extras  */}
+              { product?.addonExtras.length > 0 && ( 
+               <div className=" pl-2 pb-4">
+                  <div className=" text-sm text-gray-800">Addons/Extras</div>
+                  {product?.addonExtras?.map((item) => {
+                    return (
+                      <div
+                        key={item.id}
+                        className="flex justify-between gap-2 mt-4 items-start"
                       >
-                        {expandedStates[product.id] ? "Show less" : "Read more"}
-                      </button>
-                    </div>
-                  </div>
+                        <div className="flex w-[40%] items-start gap-1 sm:gap-2">
+                          <img
+                            className="pt-1"
+                            src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
+                            alt=""
+                          />
+                          <div>
+                            <div className="text-gray-600 text-sm">
+                              {item.name}
+                            </div>
+                          </div>
+                        </div>
+                        {/* addon and extras increment and decrement */}
+                        <div className="flex w-[50%] justify-between items-center gap-4 sm:gap-8">
+                          <div>
+                            <div className="flex w-16 border rounded-md border-orange-400 justify-between items-center text-orange-400 px-1.5">
+                              <button onClick={() => handleDecrement(product.id, item.id ,"addon")}>
+                                <i className="fa-solid text-sm fa-minus"></i>
+                              </button>
+                              <div className=" text-[13px]">{item.quantity}</div>
+                              <button onClick={() => handleIncrement(product.id, item.id ,"addon")}>
+                                <i className="fa-solid text-sm fa-plus"></i>
+                              </button>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="text-orange-400 text-sm font-semibold">
+                              ₹ {item.price * item.quantity}.00
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-                <div className="flex w-[50%] justify-between items-center gap-4 sm:gap-8">
-                  <div>
-                    <div className="flex w-[5.5rem] border gap-3 sm:gap-3 rounded-md border-orange-400 justify-between items-center text-orange-400 px-2 py-1">
-                      <button onClick={() => handleDecrement(product.id)}>
-                        <i className="fa-solid fa-minus"></i>
-                      </button>
-                      <div>{product.quantity}</div>
-                      <button onClick={() => handleIncrement(product.id)}>
-                        <i className="fa-solid fa-plus"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-orange-400 text-sm sm:text-[1rem] font-semibold">
-                      ₹ {product.price * product.quantity}.00
-                    </div>
-                  </div>
-                </div>
+                )
+              }
               </div>
             ))}
         </div>
@@ -150,6 +237,7 @@ function CartPage() {
             <i className="fa-solid fa-chevron-right"></i>
           </div>
         </Link>
+        {/* cooking instruction ---- */}
         <div className="my-6 rounded-md bg-[#f5f5f5] border-dashed border border-[#8d8f91] px-4 py-5 text-gray-600 text-sm">
           <div>Add Cooking Instruction</div>
           <div>
@@ -162,6 +250,7 @@ function CartPage() {
             />
           </div>
         </div>
+        {/* bill info ----- */}
         <div className="font-semibold">Bill Details</div>
         <div className="relative rounded-md mt-4 px-4 py-2 text-sm bg-[#f5f5f5]">
           <div className="py-2 flex justify-between">
@@ -192,6 +281,7 @@ function CartPage() {
             />
           </div>
         </div>
+        {/* payment info ---- */}
         <div
           onClick={() => handlePayClick("phonepe")}
           className="cursor-pointer mt-6 flex justify-between items-center shadow-custom px-3 py-4"
@@ -233,6 +323,7 @@ function CartPage() {
           </div>
         </div>
       </div>
+    
       <Bottom_cart_comp
         // price={totalAmount}
         // item={totalItems}

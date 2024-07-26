@@ -1,63 +1,68 @@
+import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-function Custom_Food({ setCustomFoodComp, product, onAddProduct }) {
-  const bigRef = useRef(null);
-  const smallRef = useRef(null);
-  const AddonRef = useRef(null);
-  const ExtrasRef = useRef(null);
+function Custom_Food({ setCustomFoodComp, productId, onAddProduct }) {
+  const [items, setItems] = useState(null);
+  const [selectedSize, setSelectedSize] = useState("");
+  const [amount, setAmount] = useState("");
+  const [addons, setAddons] = useState([]);
+  const [checkedAddons, setCheckedAddons] = useState({});
+  const [extras, setExtras] = useState([]);
+  const [checkedExtras, setCheckedExtras] = useState({});
 
-  // Set default size and price here
-  const defaultSize = "big"; // change to "small" if you want the small size to be default
-  const defaultPrice = defaultSize === "big" ? 549 : 20;
 
-  const [selectedSize, setSelectedSize] = useState(defaultSize);
-  const [price, setPrice] = useState(defaultPrice);
+  async function getProductData() {
+    await axios
+      .get(`https://frenzoo.qrdine-in.com/addons?product_id=${productId}`)
+      .then((res) => {
+        setItems(res.data);
+        if (res.data.variations.length > 0) {
+          const defaultVariant = res.data.variations[0].values[0];
+          setSelectedSize(defaultVariant.label);
+          setAmount(defaultVariant.optionPrice);
+        } else {
+          setAmount(res.data.product.price);
+        }
+      });
+  }
 
   useEffect(() => {
-    if (defaultSize === "big") {
-      bigRef.current.checked = true;
-    } else if (defaultSize === "small") {
-      smallRef.current.checked = true;
-    }
-
-  }, [defaultSize]);
+    getProductData();
+  }, []);
 
   const handleDivClick = (size, price) => {
-    if (size === "big") {
-      bigRef.current.checked = true;
-      setSelectedSize("big");
-      setPrice(549);
-    } else if (size === "small") {
-      smallRef.current.checked = true;
-      setSelectedSize("small");
-      setPrice(20);
-    }
-  };
-
-  const handleApply = () => {
-    const options = { size: selectedSize, price };
-    onAddProduct(product, options);
+    setSelectedSize(size);
+    setAmount(price);
   };
 
   const handleClose = () => {
     setCustomFoodComp(false);
   };
 
-  function handleAddon() {
-    if (AddonRef.current.checked) {
-      AddonRef.current.checked = false;
+  const handleAddonChange = (addon, isChecked) => {
+    if (isChecked) {
+      setAddons([...addons, {...addon , quantity:1}]);
     } else {
-      AddonRef.current.checked = true;
+      setAddons(addons.filter((item) => item.price !== addon.price));
     }
-  }
+    setCheckedAddons((prev) => ({ ...prev, [addon.id]: isChecked }));
+  };
 
-  function handleExtras() {
-    if (ExtrasRef.current.checked) {
-      ExtrasRef.current.checked = false;
+  const handleExtrasChange = (extra, isChecked) => {
+    if (isChecked) {
+      setExtras([...extras, {...extra , quantity:1}]);
     } else {
-      ExtrasRef.current.checked = true;
+      setExtras(extras.filter((price) => price !== extra.price));
     }
-  }
+    setCheckedExtras((prev)=> ({...prev , [extra.id]:isChecked}))
+  };
+
+  const price =
+    parseFloat(amount) +
+    addons.reduce((acc, curr) => acc + parseFloat(curr.price), 0) +
+    extras.reduce((acc, curr) => acc + parseFloat(curr.price), 0);
+
   return (
     <div className="flex justify-center z-50 bg-[#000000cc] items-center w-full h-full fixed right-0 top-0">
       <div className="bg-white w-[45rem] mx-3 h-fit shadow-custom border rounded-3xl">
@@ -73,87 +78,115 @@ function Custom_Food({ setCustomFoodComp, product, onAddProduct }) {
           </div>
         </div>
         <div className="px-8 py-8">
+          {/* product info -----  */}
           <div className="flex gap-2">
             <div className="w-28 h-28 rounded-md overflow-hidden">
-              <img src={product.image_url} alt="product" />
+              <img src={items?.product.image_url} alt="product" />
             </div>
             <div>
-              <div className="font-semibold">{product.name}</div>
-              <div className="text-gray-400 text-sm">{product.description}</div>
+              <div className="font-semibold">{items?.product.name}</div>
+              <div className="text-gray-400 text-sm">
+                {items?.product.description}
+              </div>
             </div>
           </div>
-          <div className="font-semibold mt-8 text-gray-700">Choose Size</div>
+          {/* varients ---- */}
+          {items?.variations.length > 0 && (
+            <div className="font-semibold mt-8 text-gray-700">Choose Size</div>
+          )}
           <div className="py-3">
-            <div
-              onClick={() => handleDivClick("big", 549)}
-              className="border-dashed border-b cursor-pointer border-b-gray-300 mb-4 pb-3 justify-between flex"
-            >
-              <div>Big</div>
-              <div className="flex gap-5">
-                <label htmlFor="">₹ 549</label>
-                <input
-                  type="radio"
-                  name="size"
-                  value="1"
-                  ref={bigRef}
-                  id="big"
-                />
-              </div>
+            {items &&
+              items?.variations.map((item) => {
+                return item.values.map((variation) => (
+                  <div
+                    key={variation.label}
+                    onClick={() =>
+                      handleDivClick(variation.label, variation.optionPrice)
+                    }
+                    className="border-dashed border-b cursor-pointer border-b-gray-300 mb-4 pb-3 justify-between flex"
+                  >
+                    <div>{variation.label}</div>
+                    <div className="flex gap-5">
+                      <label htmlFor="">₹ {variation.optionPrice}</label>
+                      <input
+                        type="radio"
+                        name="size"
+                        value={variation.label}
+                        checked={selectedSize === variation.label}
+                        readOnly
+                      />
+                    </div>
+                  </div>
+                ));
+              })}
+          </div>
+          {/* addons ------- */}
+          {items?.addOns.length > 0 && (
+            <div className=" w-full border-b pb-3 border-dashed border-b-gray-300">
+              <div className=" font-semibold">Addons</div>
+              {items?.addOns.map((addon) => (
+                <button
+                  onClick={() =>
+                    handleAddonChange(addon, !checkedAddons[addon.id])
+                  }
+                  key={addon.id}
+                  className=" w-full pt-3 flex justify-between"
+                >
+                  <div>{addon.name}</div>
+                  <div className=" flex gap-5">
+                    <div>₹ {addon.price}</div>
+                    <div>
+                      <input
+                        checked={checkedAddons[addon.id] || false}
+                        type="checkbox"
+                        value={addon.price}
+                        onChange={(e) =>
+                          handleAddonChange(addon, e.target.checked)
+                        }
+                      />
+                    </div>
+                  </div>
+                </button>
+              ))}
             </div>
-            <div
-              onClick={() => handleDivClick("small", 20)}
-              className="border-dashed border-b cursor-pointer border-b-gray-300 pb-3 justify-between flex"
-            >
-              <div>Small</div>
-              <div className="flex gap-5">
-                <label htmlFor="">₹ 20</label>
-                <input
-                  type="radio"
-                  name="size"
-                  value="2"
-                  ref={smallRef}
-                  id="small"
-                />
+          )}
+          {/* extrass ----- */}
+          {items?.extras.length >0  && (
+              <div className=" border-b border-dashed border-b-gray-300 py-3 mb-3 w-full">
+                <div className=" font-semibold">Extras</div>
+                {items?.extras.map((extra) => (
+                  <button
+                  key={extra.id}
+                    onClick={()=> handleExtrasChange(extra, !checkedExtras[extra.id])}
+                    className=" w-full pt-3 flex justify-between"
+                  >
+                    <div>{extra.name}</div>
+                    <div className=" flex gap-5">
+                      <div>₹ {extra.price}</div>
+                      <div>
+                        <input onChange={(e)=> handleExtrasChange(extra, e.target.checked)}
+                        checked={checkedExtras[extra.id] || false}
+                        type="checkbox" />
+                      </div>
+                    </div>
+                  </button>
+                ))}
               </div>
-            </div>
-          </div>
-          <div className=" w-full border-b pb-3 border-dashed border-b-gray-300">
-            <div className=" font-semibold">Addons</div>
-            <button
-              onClick={handleAddon}
-              className=" w-full pt-3 flex justify-between"
-            >
-              <div>Fries And Cola Drink</div>
-              <div className=" flex gap-5">
-                <div>₹ 149</div>
-                <div>
-                  <input ref={AddonRef} type="checkbox" />
-                </div>
-              </div>
-            </button>
-          </div>
-          <div className=" border-b border-dashed border-b-gray-300 py-3 mb-3 w-full">
-            <div className=" font-semibold">Extras</div>
-            <button
-              onClick={handleExtras}
-              className=" w-full pt-3 flex justify-between"
-            >
-              <div>Fries And Cola Drink</div>
-              <div className=" flex gap-5">
-                <div>₹ 149</div>
-                <div>
-                  <input ref={ExtrasRef} type="checkbox" />
-                </div>
-              </div>
-            </button>
-          </div>
+            )}
+          {/* grand total ---- */}
           <div className="flex justify-between mb-7">
             <div className="font-semibold text-gray-700">Grand Total</div>
-            <div className="pr-7 font-semibold text-orange-500">₹ {price}</div>
+            <div className="pr-7 font-semibold text-orange-500">
+              ₹ {price}
+            </div>
           </div>
+          {/* add product */}
           <div
             className="bg-orange-400 text-white text-center p-2 rounded-lg mt-8 cursor-pointer"
-            onClick={handleApply}
+            onClick={() => onAddProduct(items.product, { size: selectedSize, price, addonExtras:[
+              ...addons,
+              ...extras
+            ] })}
           >
             Apply
           </div>

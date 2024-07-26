@@ -15,7 +15,6 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
   const contentRef = useRef(null);
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cart.products);
-
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
@@ -41,12 +40,13 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
     setCustomFoodComp(false);
   };
 
-  const handleIncrement = (id, size) => {
-    dispatch(incrementProduct({ id, size }));
+  const handleIncrement = (id) => {
+    // console.log(id)
+    dispatch(incrementProduct({ id }));
   };
 
-  const handleDecrement = (id, size) => {
-    dispatch(decrementProduct({ id, size }));
+  const handleDecrement = (id) => {
+    dispatch(decrementProduct({ id }));
   };
 
   const handleToggle = (id) => {
@@ -133,8 +133,9 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
                 <div className="w-36 flex justify-center flex-col items-center h-36 rounded-md">
                  <div className=" w-24 h-24">
                  <img
+                    loading="lazy"
                     className="overflow-auto h-full object-cover object-center w-full rounded-md"
-                    src={item.image_url}
+                    src={item?.image_url}
                     alt=""
                   />
                  </div>
@@ -142,13 +143,13 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
                     {productInCart ? (
                       <div className="border-[#ff8e2f] w-24 flex gap-4 justify-center items-center text-[#ff8e2f] rounded-md border px-4 py-2">
                         <button
-                          onClick={() => handleDecrement(item.id, item.size)}
+                          onClick={() => handleDecrement(item.id)}
                         >
                           <i className="fa-solid fa-minus"></i>
                         </button>
                         <div>{productInCart.quantity}</div>
                         <button
-                          onClick={() => handleIncrement(item.id, item.size)}
+                          onClick={() => handleIncrement(item.id)}
                         >
                           <i className="fa-solid fa-plus"></i>
                         </button>
@@ -170,9 +171,10 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
         </div>
         {isCustomFoodComp && (
           <Custom_Food
-            product={selectedProduct}
+            productId={selectedProduct.id}
             setCustomFoodComp={setCustomFoodComp}
             onAddProduct={handleAddProduct}
+
           />
         )}
       </div>

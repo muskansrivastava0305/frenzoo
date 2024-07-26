@@ -19,7 +19,7 @@ function Home_page_content() {
   const [searchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [product_type, setProductType] = useState("");
-  const [bestSeller , setBestSeller] = useState("")
+  const [bestSeller , setBestSeller] = useState(true)
   const table = searchParams.get("table");
   const branchId = searchParams.get("branch_id");
   const [expandedProducts, setExpandedProducts] = useState({});
@@ -27,7 +27,7 @@ function Home_page_content() {
   async function getTableData() {
     await axios
       .get(
-        `https://frenzoo.qrdine-in.com/degitalmenuapi?table=${table}&branch_id=${branchId}&search=${search}&product_type=${product_type}&set_menu=${bestSeller}`
+        `https://frenzoo.qrdine-in.com/degitalmenuapi?table=${table}&branch_id=${branchId}&search=${search}&product_type=${product_type}&set_menu=${Number(bestSeller)}`
       )
       .then((res) => {
         setCategory(res.data);
@@ -98,7 +98,8 @@ function Home_page_content() {
                 </button>
               )}
              {  
-              <button onClick={()=> setBestSeller("0")} className=" flex justify-center items-center border rounded-md text-sm gap-2 p-2 border-[#f5f5f5]">
+              <button onClick={()=> setBestSeller(!bestSeller)} 
+              className={`${bestSeller ? " border-[#f5f5f5]" : "bg-[#ffe395]  border-[#ffe395]"} flex justify-center items-center border rounded-md text-sm gap-2 p-2 `}>
               <img
                 src="https://frenzoo.qrdine-in.com/public/assets/images/icons/veg.svg"
                 alt="veg"
@@ -113,9 +114,9 @@ function Home_page_content() {
                 <button
                   onClick={() => {
                     setProductType("")
-                    setBestSeller("")
+                    setBestSeller(true)
                   }}
-                  className=" flex justify-center py-2 items-center border rounded-md text-[13px] sm:text-sm gap-2 px-1 sm:px-2 bg-white"
+                  className=" flex justify-center py-2 items-center border rounded-md text-[13px] sm:text-sm gap-2 px-1 sm:px-2 bg-white "
                 >
                   Clear filter<i class="fa-solid fa-xmark"></i>
               </button>
