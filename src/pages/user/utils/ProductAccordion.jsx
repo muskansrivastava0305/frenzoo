@@ -42,11 +42,11 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
 
   const handleIncrement = (id) => {
     // console.log(id)
-    dispatch(incrementProduct({ id }));
+    dispatch(incrementProduct({ id  , type:"Product"}));
   };
 
   const handleDecrement = (id) => {
-    dispatch(decrementProduct({ id }));
+    dispatch(decrementProduct({ id , type:"Product" }));
   };
 
   const handleToggle = (id) => {

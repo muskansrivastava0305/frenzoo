@@ -25,19 +25,28 @@ const cartReducer = createSlice({
         incrementProduct: (state, action) => {
             const product = state.products.find(product => product.id === action.payload.id);
             if (product && product.quantity < 20) {
+              if(action.payload.type === "Product"){
+                product.quantity += 1;
+                product?.addonExtras.map((item)=> item.quantity += 1)
+              }else{
                 if(action.payload.choice){
                     product.quantity += 1;
                     product?.addonExtras.map((item)=> item.quantity += 1)
                 }else{
                     product.quantity += 1;
                 }
+              }
             }
         },
         decrementProduct: (state, action) => {
             const product = state.products.find(product => product.id === action.payload.id);
             if (product && product.quantity > 1) {
+               if(action.payload.type === 'Product'){
                 product.quantity -= 1;
-                // product?.addonExtras.map((item)=> item.quantity -= 1)
+                product?.addonExtras.map((item)=> item.quantity -= 1)
+               }else{
+                product.quantity -= 1;
+               }
             } else if (product && product.quantity === 1) {
                 state.products = state.products.filter(product => product.id !== action.payload.id);
             }
@@ -63,6 +72,7 @@ const cartReducer = createSlice({
 
             }
         },
+
         addCookingInstruction: (state, action) => {
             state.cookingInstruction = action.payload
         },
@@ -81,7 +91,11 @@ const cartReducer = createSlice({
 export const { addProduct, incrementProduct, decrementProduct, addCookingInstruction , addPaymentMethod , addTableAndBranch  , addonDecrement , addonIncrement} = cartReducer.actions;
 
 export const selectTotalPrice = state => {
-    return state.cart.products.reduce((total, product) => total + product.price * product.quantity, 0);
+    const productPrice =  state.cart.products.reduce((total, product) => total + (product.price * product.quantity), 0);
+    const addonExtrasPrice = state.cart.products.map((product)=>{
+       return product?.addonExtras.reduce((total , product)=> total + (product.price * product.quantity) ,0 )
+    })
+    return parseFloat(productPrice) + parseFloat(addonExtrasPrice[0])
 };
 
 export const selectTotalItemCount = state => {

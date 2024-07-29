@@ -53,7 +53,7 @@ function Custom_Food({ setCustomFoodComp, productId, onAddProduct }) {
     if (isChecked) {
       setExtras([...extras, {...extra , quantity:1}]);
     } else {
-      setExtras(extras.filter((price) => price !== extra.price));
+      setExtras(extras.filter((item) => item.price !== extra.price));
     }
     setCheckedExtras((prev)=> ({...prev , [extra.id]:isChecked}))
   };
@@ -62,7 +62,7 @@ function Custom_Food({ setCustomFoodComp, productId, onAddProduct }) {
     parseFloat(amount) +
     addons.reduce((acc, curr) => acc + parseFloat(curr.price), 0) +
     extras.reduce((acc, curr) => acc + parseFloat(curr.price), 0);
-
+    
   return (
     <div className="flex justify-center z-50 bg-[#000000cc] items-center w-full h-full fixed right-0 top-0">
       <div className="bg-white w-[45rem] mx-3 h-fit shadow-custom border rounded-3xl">
@@ -183,7 +183,7 @@ function Custom_Food({ setCustomFoodComp, productId, onAddProduct }) {
           {/* add product */}
           <div
             className="bg-orange-400 text-white text-center p-2 rounded-lg mt-8 cursor-pointer"
-            onClick={() => onAddProduct(items.product, { size: selectedSize, price, addonExtras:[
+            onClick={() => onAddProduct(items.product, { size: selectedSize, price:parseFloat(amount)  , addonExtras:[
               ...addons,
               ...extras
             ] })}

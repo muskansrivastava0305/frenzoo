@@ -20,9 +20,11 @@ function CartPage() {
   const { table, branch_id } = useSelector((state) => state.cart);
   const [expandedStates, setExpandedStates] = useState({});
   const [selectedPayment, setSelectedPayment] = useState(paymentMethod || "");
-  const [cookingInstruction, setCookingInstruction] = useState( cookingIns || "" );
-  const [isOpen , setIsOpen] =  useState(false)
-  const [isTrue , setIsTrue] =  useState(false)
+  const [cookingInstruction, setCookingInstruction] = useState(
+    cookingIns || ""
+  );
+  const [isOpen, setIsOpen] = useState(false);
+  const [isTrue, setIsTrue] = useState(false);
   const [currentProductId, setCurrentProductId] = useState(null);
   const products = useSelector((state) => state.cart.products);
   const totalAmount = useSelector(selectTotalPrice);
@@ -36,33 +38,35 @@ function CartPage() {
     dispatch(addPaymentMethod(method));
   };
 
-  
-  const OnIncrementProduct = (productId,choice) =>{
-    if(choice){
-      dispatch(incrementProduct({ id:productId , choice}))
-    }else{
-      dispatch(incrementProduct({id:productId, choice }))
+  const OnIncrementProduct = (productId, choice) => {
+    if (choice) {
+      dispatch(incrementProduct({ id: productId, choice }));
+    } else {
+      dispatch(incrementProduct({ id: productId, choice }));
     }
-    setIsTrue(false)
-  }
+    setIsTrue(false);
+  };
 
-  const handleIncrement = (productId , itemId , type) => {
-    if(type=='product'){
-      setCurrentProductId(productId);
-      setIsOpen(true)
-    }else{
-      dispatch(addonIncrement({productId, itemId}))
+  const handleIncrement = (productId, itemId, type) => {
+    if (type == "product") {
+      if (itemId > 0) {
+        setCurrentProductId(productId);
+        setIsOpen(true);
+      } else {
+        dispatch(incrementProduct({ id: productId }));
+      }
+    } else {
+      dispatch(addonIncrement({ productId, itemId }));
     }
   };
 
-  const handleDecrement = (productId , itemId , type) => {
-    if(type=='product'){
-      dispatch(decrementProduct({ id:productId }));
-    }else{
-      dispatch(addonDecrement({productId , itemId}))
+  const handleDecrement = (productId, itemId, type) => {
+    if (type == "product") {
+      dispatch(decrementProduct({ id: productId }));
+    } else {
+      dispatch(addonDecrement({ productId, itemId }));
     }
   };
-
 
   useEffect(() => {
     if (!products.length) {
@@ -110,10 +114,7 @@ function CartPage() {
           {products &&
             products.map((product, index) => (
               <div key={index}>
-                <div
-                  
-                  className="flex justify-between gap-2 mt-4 items-start py-4"
-                >
+                <div className="flex justify-between gap-2 mt-4 items-start py-4">
                   {/* product info */}
                   <div className="flex w-[40%] items-start gap-1 sm:gap-2">
                     <img
@@ -153,18 +154,40 @@ function CartPage() {
                   <div className="flex w-[50%] justify-between items-center gap-4 sm:gap-8">
                     <div>
                       <div className="flex w-[5.1rem] border gap-3 sm:gap-3 rounded-md border-orange-400 justify-between items-center text-orange-400 px-2 py-1">
-                        <button onClick={() => handleDecrement(product.id , undefined , "product")}>
+                        <button
+                          onClick={() =>
+                            handleDecrement(
+                              product.id,
+                              product.addonExtras.length,
+                              "product"
+                            )
+                          }
+                        >
                           <i className="fa-solid fa-minus"></i>
                         </button>
                         <div>{product.quantity}</div>
-                        <button onClick={() => handleIncrement(product.id , undefined ,"product")}>
+                        <button
+                          onClick={() =>
+                            handleIncrement(
+                              product.id,
+                              product.addonExtras.length,
+                              "product"
+                            )
+                          }
+                        >
                           <i className="fa-solid fa-plus"></i>
                         </button>
                       </div>
                     </div>
                     <div>
                       <div className="text-orange-400 text-sm sm:text-[1rem] font-semibold">
-                        ₹ {product.price * product.quantity}.00
+                        ₹{" "}
+                        {product?.addonExtras.reduce(
+                          (total, item) => total + item.price * item.quantity,
+                          0
+                        ) +
+                          product.price * product.quantity}
+                        .00
                       </div>
                     </div>
                   </div>
@@ -177,59 +200,76 @@ function CartPage() {
                     setIsTrue={setIsTrue}
                     productId={currentProductId}
                   />
-        )}
+                )}
                 {/* addons and extras  */}
-              { product?.addonExtras.length > 0 && ( 
-               <div className=" pl-2 pb-4">
-                  <div className=" text-sm text-gray-800">Addons/Extras</div>
-                  {product?.addonExtras?.map((item) => {
-                    return (
-                      <div
-                        key={item.id}
-                        className="flex justify-between gap-2 mt-4 items-start"
-                      >
-                        <div className="flex w-[40%] items-start gap-1 sm:gap-2">
-                          <img
-                            className="pt-1"
-                            src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
-                            alt=""
-                          />
-                          <div>
-                            <div className="text-gray-600 text-sm">
-                              {item.name}
+                {product?.addonExtras.length > 0 && (
+                  <div className=" pl-2 pb-4">
+                    <div className=" text-sm text-gray-800">Addons/Extras</div>
+                    {product?.addonExtras?.map((item) => {
+                      return (
+                        <div
+                          key={item.id}
+                          className="flex justify-between gap-2 mt-4 items-start"
+                        >
+                          <div className="flex w-[40%] items-start gap-1 sm:gap-2">
+                            <img
+                              className="pt-1"
+                              src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
+                              alt=""
+                            />
+                            <div>
+                              <div className="text-gray-600 text-sm">
+                                {item.name}
+                              </div>
+                            </div>
+                          </div>
+                          {/* addon and extras increment and decrement */}
+                          <div className="flex w-[50%] justify-between items-center gap-4 sm:gap-8">
+                            <div>
+                              <div className="flex w-16 border rounded-md border-orange-400 justify-between items-center text-orange-400 px-1.5">
+                                <button
+                                  onClick={() =>
+                                    handleDecrement(
+                                      product.id,
+                                      item.id,
+                                      "addon"
+                                    )
+                                  }
+                                >
+                                  <i className="fa-solid text-sm fa-minus"></i>
+                                </button>
+                                <div className=" text-[13px]">
+                                  {item.quantity}
+                                </div>
+                                <button
+                                  onClick={() =>
+                                    handleIncrement(
+                                      product.id,
+                                      item.id,
+                                      "addon"
+                                    )
+                                  }
+                                >
+                                  <i className="fa-solid text-sm fa-plus"></i>
+                                </button>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="text-orange-400 text-sm font-semibold">
+                                ₹ {item.price * item.quantity}.00
+                              </div>
                             </div>
                           </div>
                         </div>
-                        {/* addon and extras increment and decrement */}
-                        <div className="flex w-[50%] justify-between items-center gap-4 sm:gap-8">
-                          <div>
-                            <div className="flex w-16 border rounded-md border-orange-400 justify-between items-center text-orange-400 px-1.5">
-                              <button onClick={() => handleDecrement(product.id, item.id ,"addon")}>
-                                <i className="fa-solid text-sm fa-minus"></i>
-                              </button>
-                              <div className=" text-[13px]">{item.quantity}</div>
-                              <button onClick={() => handleIncrement(product.id, item.id ,"addon")}>
-                                <i className="fa-solid text-sm fa-plus"></i>
-                              </button>
-                            </div>
-                          </div>
-                          <div>
-                            <div className="text-orange-400 text-sm font-semibold">
-                              ₹ {item.price * item.quantity}.00
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                )
-              }
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             ))}
         </div>
         <Link
-          to="/"
+          to={`/?table=${table}&branch_id=${branch_id}`}
           className="my-6 rounded-md bg-[#f5f5f5] border-dashed border flex justify-between items-center border-[#8d8f91] px-4 py-5 text-gray-600 text-sm"
         >
           <div>Add More</div>
@@ -323,7 +363,7 @@ function CartPage() {
           </div>
         </div>
       </div>
-    
+
       <Bottom_cart_comp
         // price={totalAmount}
         // item={totalItems}
