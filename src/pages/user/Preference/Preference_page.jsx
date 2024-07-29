@@ -7,6 +7,7 @@ const MyComponent = () => {
   const [isCheckboxDisable, setIsCheckboxDisable] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
+  const [isValid, setIsValid] = useState(false)
   const [mobileNumber, setMobileNumber] = useState("");
   const [name, setName] = useState("");
   const [isAnonymousChecked, setIsAnonymousChecked] = useState(false);
@@ -27,6 +28,10 @@ const MyComponent = () => {
         setIsCheckboxDisable(false);
       }
       setNameError(false);
+      setIsValid(true)
+    }else{
+      setNameError(true)
+      setIsValid(false)
     }
   };
 
@@ -40,6 +45,10 @@ const MyComponent = () => {
         setIsCheckboxDisable(false);
       }
       setPhoneError(false);
+      setIsValid(true)
+    }else{
+      setPhoneError(true)
+      setIsValid(false)
     }
   };
 
@@ -77,7 +86,7 @@ const MyComponent = () => {
             </label>
             <input
               type="text"
-              onClick={handleInputEvent}
+              onInput={handleInputEvent}
               disabled={isInputDisable}
               value={name}
               onChange={handleNameChange}
@@ -99,7 +108,7 @@ const MyComponent = () => {
             <input
               type="text"
               disabled={isInputDisable}
-              onClick={handleInputEvent}
+              onInput={handleInputEvent}
               value={mobileNumber}
               onChange={handleMobileNumberChange}
               className="px-5 py-3 placeholder:text-sm sm:placeholder:text-lg w-full border-gray-300 border rounded-md mt-2"
@@ -131,13 +140,23 @@ const MyComponent = () => {
         </button>
       </div>
 
-      <Bottom_cart_comp
+      {isValid ? (
+        <Bottom_cart_comp
         // price="100.00"
         // item="1"
         to="/place_order_successfully"
         action="Proceed"
         onClick={handleOrder}
       />
+      ): (
+        <Bottom_cart_comp
+        // price="100.00"
+        // item="1"
+        to="/preference"
+        action="Proceed"
+        onClick={handleOrder}
+      />
+      )}
     </div>
   );
 };
