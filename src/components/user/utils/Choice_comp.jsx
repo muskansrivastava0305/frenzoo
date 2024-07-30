@@ -1,16 +1,24 @@
 import React, { useState } from "react";
 
-function Choice_comp({setIsOpen , isOpen ,  OnIncrementProduct , isTrue , setIsTrue , productId }) {
+function Choice_comp({setIsOpen , isOpen ,  OnIncrementProduct , isTrue , setIsTrue , productId , OnDecrementProduct , action }) {
 
   const handleNoClick = (choice) => {
     setIsTrue(choice);
-    OnIncrementProduct(productId,choice);
+    if(action === 'Increment'){
+      OnIncrementProduct(productId,choice);
+    }else if('Decrement'){
+      OnDecrementProduct(productId,choice)
+    }
     setIsOpen(false); // Close the modal after selection
   };
 
   const handleYesClick = (choice) => {
     setIsTrue(choice);
-    OnIncrementProduct(productId,choice);
+    if(action==='Increment'){
+      OnIncrementProduct(productId,choice);
+    }else if('Decrement'){
+      OnDecrementProduct(productId,choice)
+    }
     setIsOpen(false); // Close the modal after selection
   };
 

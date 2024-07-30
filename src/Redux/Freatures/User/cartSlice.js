@@ -45,7 +45,12 @@ const cartReducer = createSlice({
                 product.quantity -= 1;
                 product?.addonExtras.map((item)=> item.quantity -= 1)
                }else{
-                product.quantity -= 1;
+                if(action.payload.choice){
+                    product.quantity -= 1;
+                    product?.addonExtras.map((item)=> item.quantity -= 1)
+                }else{
+                    product.quantity -= 1;
+                }
                }
             } else if (product && product.quantity === 1) {
                 state.products = state.products.filter(product => product.id !== action.payload.id);

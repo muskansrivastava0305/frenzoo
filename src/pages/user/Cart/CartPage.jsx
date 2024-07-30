@@ -25,6 +25,7 @@ function CartPage() {
   );
   const [isOpen, setIsOpen] = useState(false);
   const [isTrue, setIsTrue] = useState(false);
+  const [action , setAction] = useState("")
   const [currentProductId, setCurrentProductId] = useState(null);
   const products = useSelector((state) => state.cart.products);
   const totalAmount = useSelector(selectTotalPrice);
@@ -47,10 +48,21 @@ function CartPage() {
     setIsTrue(false);
   };
 
+
+  const OnDecrementProduct = (productId, choice)=>{
+    if (choice) {
+      dispatch(decrementProduct({ id: productId, choice }));
+    } else {
+      dispatch(decrementProduct({ id: productId, choice }));
+    }
+    setIsTrue(false);
+  }
+
   const handleIncrement = (productId, itemId, type) => {
     if (type == "product") {
       if (itemId > 0) {
         setCurrentProductId(productId);
+        setAction("Increment")
         setIsOpen(true);
       } else {
         dispatch(incrementProduct({ id: productId }));
@@ -62,7 +74,13 @@ function CartPage() {
 
   const handleDecrement = (productId, itemId, type) => {
     if (type == "product") {
-      dispatch(decrementProduct({ id: productId }));
+      if (itemId > 0) {
+        setCurrentProductId(productId);
+        setAction('Decrement')
+        setIsOpen(true);
+      } else {
+        dispatch(decrementProduct({ id: productId }));
+      }
     } else {
       dispatch(addonDecrement({ productId, itemId }));
     }
@@ -196,7 +214,9 @@ function CartPage() {
                   <Choice_comp
                     setIsOpen={setIsOpen}
                     OnIncrementProduct={OnIncrementProduct}
+                    OnDecrementProduct={OnDecrementProduct}
                     isTrue={isTrue}
+                    action={action}
                     setIsTrue={setIsTrue}
                     productId={currentProductId}
                   />
