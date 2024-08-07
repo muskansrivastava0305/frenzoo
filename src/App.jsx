@@ -8,6 +8,7 @@ import Order_placed_page from "./pages/user/order/Order_placed_page";
 import Order_track_page from "./pages/user/order/Order_track_page";
 import { isMobileOrTablet } from "./utils/deviceCheck";
 import Protected from "./components/user/utils/Protected";
+import Invoice from "./pages/user/Invoice/Invoice";
 
 function App() {
   const [isMobileOrTabletDevice, setIsMobileOrTabletDevice] = useState(false);
@@ -45,7 +46,8 @@ function App() {
           <Route path="/cart_items" element={<Protected><CartPage /></Protected>} />
           <Route path="/preference" element={<Protected><Preference_page /></Protected>} />
           <Route path="/place_order_successfully" element={<Protected><Order_placed_page /></Protected>}/>
-          <Route path="/order_track" element={<Protected><Order_track_page /></Protected>} />
+          <Route path="/order_track" element={<Order_track_page />} />
+          <Route path="/generate/invoice" element={<Invoice />} />
       </Route>
     </Routes>
   );

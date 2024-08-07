@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Bottom_cart_comp } from "../../../components/user";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { addCustomerDetail } from "../../../Redux/Freatures/User/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addCustomerDetail, addOrderId, emptyCart } from "../../../Redux/Freatures/User/cartSlice";
+import axios from "axios";
 
 const MyComponent = () => {
   const [isInputDisable, setIsInputDisable] = useState(false);
@@ -16,6 +17,8 @@ const MyComponent = () => {
   const checkboxRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch()
+
+  const  cart = useSelector(state => state.cart)
 
   const handleInputEvent = () => {
     setIsCheckboxDisable(true);
@@ -60,13 +63,9 @@ const MyComponent = () => {
     setIsInputDisable(!isAnonymousChecked);
   };
 
-  const handleOrder = () => {
+  const handleOrder = async () => {
     if (checkboxRef.current.checked) {
-      dispatch(addCustomerDetail({
-        name,
-        phone:mobileNumber
-      }))
-      navigate("/place_order_successfully");
+      dispatch(addCustomerDetail({name,phone:mobileNumber}))
     } else {
       if (name.length === 0) {
         setNameError(true);
@@ -75,13 +74,15 @@ const MyComponent = () => {
         setPhoneError(true);
       }
       else {
-        dispatch(addCustomerDetail({
-          name,
-          phone:mobileNumber
-        }))
-        navigate("/place_order_successfully");
+        dispatch(addCustomerDetail({ name, phone:mobileNumber }))
       }
     }
+
+    const response = await axios.post('https://frenzoo.qrdine-in.com/api/v1/place_checkout_order',cart)
+      const data = response.data
+      dispatch(emptyCart())
+      dispatch(addOrderId(data))
+      navigate("/place_order_successfully");
   };
 
   return (

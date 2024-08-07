@@ -1,18 +1,25 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { Navigate } from 'react-router-dom'
+import React from "react";
+import { useSelector } from "react-redux";
+import { Navigate, useLocation } from "react-router-dom";
 
-function Protected({children}) {
-    const cart = useSelector(state => state.cart.products)
-    const { table, branch_id } = useSelector((state) => state.cart);
+function Protected({ children }) {
+  const location = useLocation();
+  const { products , order_id, table, branch_id } = useSelector((state) => state.cart);
 
-    let tableAndBranch = `/?table=${table}&branch_id=${branch_id}`;
+  console.log(products)
+  const tableAndBranch = `/?table=${table}&branch_id=${branch_id}`;
+  const restrictedPaths = ["/cart_items", "/preference", "/place_order_successfully", "/order_track"];
 
-    if(cart?.length > 0 ){
-        return <> {children} </>
-    }else{
-        return <Navigate to={tableAndBranch} />
-    }
+  if (order_id !== null) {
+    return <Navigate to="/order_track">{children}</Navigate>;
+  }
+   if (products?.length <= 0 && restrictedPaths.includes(location.pathname)) {
+    return <Navigate to={tableAndBranch} />;
+  }
+
+    return <>{children}</>;
+
+  
 }
 
-export default Protected
+export default Protected;

@@ -3,12 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     products: [],
     cookingInstruction: '',
-    grandTotal:null,
+    grandTotal: null,
     paymentMethod: '',
     table: null,
     branch_id: null,
     name: null,
-    phone: null
+    phone: null,
+    order_id: null
 };
 
 const cartReducer = createSlice({
@@ -99,8 +100,14 @@ const cartReducer = createSlice({
                 state.phone = action.payload.phone
         },
 
-        addTotalAmount:(state,action)=>{
+        addTotalAmount: (state, action) => {
             state.grandTotal = action.payload
+        },
+
+        addOrderId: (state, action) => {
+            state.order_id = action.payload.order_id
+            state.branch_id = action.payload.branch_id
+            state.table = action.payload.table_id
         },
 
         emptyCart: (state) => {
@@ -109,7 +116,7 @@ const cartReducer = createSlice({
     }
 });
 
-export const { addProduct, incrementProduct, decrementProduct, emptyCart, addCookingInstruction, addTotalAmount, addPaymentMethod, addTableAndBranch, addonDecrement, addonIncrement , addCustomerDetail } = cartReducer.actions;
+export const { addProduct, incrementProduct, decrementProduct, emptyCart, addCookingInstruction, addOrderId, addTotalAmount, addPaymentMethod, addTableAndBranch, addonDecrement, addonIncrement, addCustomerDetail } = cartReducer.actions;
 
 export const selectTotalPrice = state => {
     const productPrice = state.cart.products.reduce((total, product) => total + (product.price * product.quantity), 0);
