@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { emptyCart } from "../../../Redux/Freatures/User/cartSlice";
+import { useDispatch } from "react-redux";
 
 function Order_placed_page() {
+const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(emptyCart())
+  })
   return (
     <div className=" h-screen md:h-full w-full px-3 sm:px-5 flex-col flex justify-center items-center">
        <div className=" w-5/6 sm:w-1/2 md:w-1/3">

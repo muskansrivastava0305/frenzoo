@@ -15,7 +15,7 @@ import DisplayCard from "../utils/DisplayCard";
 function Home_page_content() {
   const cart = useSelector((state) => state.cart.products);
   const [category, setCategory] = useState({});
-  const dispach = useDispatch();
+  const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const [search, setSearch] = useState("");
   const [product_type, setProductType] = useState("");
@@ -34,10 +34,16 @@ function Home_page_content() {
       });
   }
 
-  dispach(addTableAndBranch({ table, branchId }));
+  useEffect(() => {
+    dispatch(addTableAndBranch({ table, branchId }));
+  }, [dispatch, table, branchId]);
+
+
+  
+
   useEffect(() => {
     getTableData();
-  }, [search, product_type , bestSeller]);
+  }, [search, product_type , bestSeller ,  table, branchId ]);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);

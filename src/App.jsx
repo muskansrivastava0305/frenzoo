@@ -42,15 +42,10 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home_page_content />} />
-          <Route path="/cart_items" element={<CartPage />} />
-          <Route path="/preference" element={<Preference_page />} />
-          <Route
-            path="/place_order_successfully"
-            element={<Order_placed_page />}
-          />
-          <Route path="/order_track" element={<Order_track_page />} />
-        <Route element={<Protected />}>
-        </Route>
+          <Route path="/cart_items" element={<Protected><CartPage /></Protected>} />
+          <Route path="/preference" element={<Protected><Preference_page /></Protected>} />
+          <Route path="/place_order_successfully" element={<Protected><Order_placed_page /></Protected>}/>
+          <Route path="/order_track" element={<Protected><Order_track_page /></Protected>} />
       </Route>
     </Routes>
   );

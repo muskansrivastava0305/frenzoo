@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Bottom_cart_comp } from "../../../components/user";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addCustomerDetail } from "../../../Redux/Freatures/User/cartSlice";
 
 const MyComponent = () => {
   const [isInputDisable, setIsInputDisable] = useState(false);
@@ -13,6 +15,7 @@ const MyComponent = () => {
   const [isAnonymousChecked, setIsAnonymousChecked] = useState(false);
   const checkboxRef = useRef();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const handleInputEvent = () => {
     setIsCheckboxDisable(true);
@@ -59,16 +62,23 @@ const MyComponent = () => {
 
   const handleOrder = () => {
     if (checkboxRef.current.checked) {
+      dispatch(addCustomerDetail({
+        name,
+        phone:mobileNumber
+      }))
       navigate("/place_order_successfully");
     } else {
       if (name.length === 0) {
-        console.log(name.length)
         setNameError(true);
       } 
       if (mobileNumber.length !== 10) {
         setPhoneError(true);
       }
       else {
+        dispatch(addCustomerDetail({
+          name,
+          phone:mobileNumber
+        }))
         navigate("/place_order_successfully");
       }
     }

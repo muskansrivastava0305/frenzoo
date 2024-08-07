@@ -1,12 +1,18 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { selectTotalItemCount, selectTotalPrice } from '../../../Redux/Freatures/User/cartSlice'
+import { addTotalAmount, selectTotalItemCount, selectTotalPrice } from '../../../Redux/Freatures/User/cartSlice'
 
 function Bottom_cart_comp({ action , to , onClick}) {
+  const dispatch = useDispatch()
   const { table, branch_id } = useSelector((state) => state.cart);
   const totalAmount =  useSelector(selectTotalPrice)
   const totalCount = useSelector(selectTotalItemCount)
+
+  useEffect(()=>{
+
+    dispatch(addTotalAmount(Number(totalAmount)))
+  },[totalAmount,totalCount])
 
   let tableAndBranch = `table=${table}&branch_id=${branch_id}`;
 
