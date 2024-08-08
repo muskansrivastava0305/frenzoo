@@ -11,10 +11,14 @@ import {
 import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import DisplayCard from "../utils/DisplayCard";
+import Loader from "../../../components/Loader";
+import Loading from "../../../components/Loading";
 
 function Home_page_content() {
   const cart = useSelector((state) => state.cart.products);
   const [category, setCategory] = useState({});
+  const [loading , setLoading ] =useState(false)
+  const [initialLoading, setInitialLoading] = useState(true);
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const [search, setSearch] = useState("");
@@ -24,33 +28,40 @@ function Home_page_content() {
   const branchId = searchParams.get("branch_id");
   const [expandedProducts, setExpandedProducts] = useState({});
 
-  async function getTableData() {
+  async function getTableData(isInitialLoad = false) {
+    if (isInitialLoad) setInitialLoading(true);
+    setLoading(true)
     await axios
       .get(
         `https://frenzoo.qrdine-in.com/degitalmenuapi?table=${table}&branch_id=${branchId}&search=${search}&product_type=${product_type}&set_menu=${Number(bestSeller)}`
       )
       .then((res) => {
         setCategory(res.data);
-      });
+      })
+      .finally(() =>
+     { setLoading(false)
+      if (isInitialLoad) setInitialLoading(false);}
+    );
   }
+
+  useEffect(() => {
+    getTableData(true);
+  }, [table, branchId]);
 
   useEffect(() => {
     dispatch(addTableAndBranch({ table, branchId }));
   }, [dispatch, table, branchId]);
 
-
-  
-
   useEffect(() => {
     getTableData();
-  }, [search, product_type , bestSeller ,  table, branchId ]);
+  }, [search, product_type , bestSeller ]);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
     setExpandedProducts({});
   };
 
-  return (
+  return initialLoading ? <Loader/> : (
     <Home_page restaurantInfo={category}>
       {category.status !== "Booked" ? (
         <>
@@ -63,6 +74,7 @@ function Home_page_content() {
                   className=" flex justify-center items-center border rounded-md text-[13px] sm:text-sm gap-2 px-1 sm:px-2 bg-[#ffe395]  border-[#ffe395]"
                 >
                   <img
+                  loading="lazy"
                     src="https://frenzoo.qrdine-in.com/public/assets/images/icons/veg.svg"
                     alt="veg"
                   />
@@ -74,6 +86,7 @@ function Home_page_content() {
                   className="  flex justify-center items-center border rounded-md text-[13px] sm:text-sm gap-2 px-1 sm:px-2 border-[#f5f5f5]"
                 >
                   <img
+                  loading="lazy"
                     src="https://frenzoo.qrdine-in.com/public/assets/images/icons/veg.svg"
                     alt="veg"
                   />
@@ -86,6 +99,7 @@ function Home_page_content() {
                   className=" flex justify-center items-center border rounded-md text-sm gap-2 p-2 bg-[#ffe395]  border-[#ffe395]"
                 >
                   <img
+                  loading="lazy"
                     src="https://frenzoo.qrdine-in.com/public/assets/images/svg/nonveg.svg"
                     alt="veg"
                   />
@@ -97,16 +111,18 @@ function Home_page_content() {
                   className=" flex justify-center items-center border rounded-md text-sm gap-2 p-2 border-[#f5f5f5]"
                 >
                   <img
+                  loading="lazy"
                     src="https://frenzoo.qrdine-in.com/public/assets/images/svg/nonveg.svg"
                     alt="veg"
                   />
                   Non Veg
                 </button>
               )} 
-              
+
               <button onClick={()=> setBestSeller(!bestSeller)} 
               className={`${bestSeller ? " border-[#f5f5f5]" : "bg-[#ffe395]  border-[#ffe395]"} flex justify-center items-center border rounded-md text-sm gap-2 p-2 `}>
               <img
+              loading="lazy"
                 src="https://frenzoo.qrdine-in.com/public/assets/images/icons/veg.svg"
                 alt="veg"
               />
@@ -135,7 +151,9 @@ function Home_page_content() {
               <div className="pt-6">
                 <div className="text-xl text-black font-bold">Recommended</div>
               </div>
-              <div className="pb-8">
+              {
+                loading ? <Loading/> : (
+                  <div className="pb-8">
                 {category && category.categories?.length > 0
                   ? category.categories.map((item) => (
                       <ProductAccordion
@@ -148,8 +166,14 @@ function Home_page_content() {
                         setExpandedProducts={setExpandedProducts}
                       />
                     ))
-                  : null}
+                  : <div className=" mt-10 flex justify-center items-center">
+                    <div>
+                    No data found 
+                    </div>
+                    </div>}
               </div>
+                )
+              }
               {cart.length > 0 && (
                 <Bottom_cart_comp
                   // price={price}

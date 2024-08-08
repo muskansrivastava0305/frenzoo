@@ -9,6 +9,7 @@ function Qrdine_logo({restaurantInfo}) {
         <div className=" w-full justify-center items-center flex">
           <div className=" w-[6rem] flex justify-center items-center">
             <img
+            loading="lazy"
               className=" h-full w-full"
               src={restaurantInfo.detail?.image_url}
               alt="logo"

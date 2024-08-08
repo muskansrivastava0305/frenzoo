@@ -97,7 +97,7 @@ function Custom_Food({ setCustomFoodComp, productId, onAddProduct }) {
                   height={112}
                 />
               ) : (
-                <img src={items?.product.image_url} alt="product" />
+                <img loading="lazy" src={items?.product.image_url} alt="product" />
               )}
             </div>
             <div>

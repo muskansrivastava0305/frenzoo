@@ -105,12 +105,14 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
                     <div className="pb-1">
                       {item.product_type === "veg" && (
                         <img
+                        loading='lazy'
                           src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
                           alt="category"
                         />
                       )}
                       {item.product_type === "non_veg" && (
                         <img
+                        loading="lazy"
                           src="https://frenzoo.qrdine-in.com/assets/images/svg/nonveg.svg"
                           alt="category"
                         />

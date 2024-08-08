@@ -13,7 +13,7 @@ function Order_placed_page() {
   return (
     <div className=" h-screen md:h-full w-full px-3 sm:px-5 flex-col flex justify-center items-center">
        <div className=" w-5/6 sm:w-1/2 md:w-1/3">
-       <img className=" h-full w-full"
+       <img loading="lazy" className=" h-full w-full"
           src="https://frenzoo.qrdine-in.com/assets/images/gif/success-payment-light.gif"
           alt=""
         />

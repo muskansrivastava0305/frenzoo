@@ -1,14 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Layout from "./Layout";
-import Home_page_content from "./pages/user/Home/Home_page_content";
-import CartPage from "./pages/user/Cart/CartPage";
-import Preference_page from "./pages/user/Preference/Preference_page";
-import Order_placed_page from "./pages/user/order/Order_placed_page";
-import Order_track_page from "./pages/user/order/Order_track_page";
 import { isMobileOrTablet } from "./utils/deviceCheck";
 import Protected from "./components/user/utils/Protected";
-import Invoice from "./pages/user/Invoice/Invoice";
+import Layout from "./Layout";
+import Loader from "./components/Loader";
+// import Home_page_content from "./pages/user/Home/Home_page_content";
+// import CartPage from "./pages/user/Cart/CartPage";
+// import Preference_page from "./pages/user/Preference/Preference_page";
+// import Order_placed_page from "./pages/user/order/Order_placed_page";
+// import Order_track_page from "./pages/user/order/Order_track_page";
+// import Invoice from "./pages/user/Invoice/Invoice";
+const Home_page_content = React.lazy(() =>
+  import("./pages/user/Home/Home_page_content")
+);
+const CartPage = React.lazy(() => import("./pages/user/Cart/CartPage"));
+const Preference_page = React.lazy(() =>
+  import("./pages/user/Preference/Preference_page")
+);
+const Order_placed_page = React.lazy(() =>
+  import("./pages/user/order/Order_placed_page")
+);
+const Order_track_page = React.lazy(() =>
+  import("./pages/user/order/Order_track_page")
+);
+const Invoice = React.lazy(() => import("./pages/user/Invoice/Invoice"));
 
 function App() {
   const [isMobileOrTabletDevice, setIsMobileOrTabletDevice] = useState(false);
@@ -40,16 +55,73 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<Home_page_content />} />
-          <Route path="/cart_items" element={<Protected><CartPage /></Protected>} />
-          <Route path="/preference" element={<Protected><Preference_page /></Protected>} />
-          <Route path="/place_order_successfully" element={<Protected><Order_placed_page /></Protected>}/>
-          <Route path="/order_track" element={<Order_track_page />} />
-          <Route path="/generate/invoice" element={<Invoice />} />
-      </Route>
-    </Routes>
+    <Suspense fallback={<Loader />}>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Suspense fallback={<Loader />}>
+              <Layout />
+            </Suspense>
+          }
+        >
+          <Route
+            index
+            element={
+              <Suspense fallback={<Loader />}>
+                <Home_page_content />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/cart_items"
+            element={
+              <Suspense fallback={<Loader />}>
+                <Protected>
+                  <CartPage />
+                </Protected>
+              </Suspense>
+            }
+          />
+          <Route
+            path="/preference"
+            element={
+              <Suspense fallback={<Loader />}>
+                <Protected>
+                  <Preference_page />
+                </Protected>
+              </Suspense>
+            }
+          />
+          <Route
+            path="/place_order_successfully"
+            element={
+              <Suspense fallback={<Loader />}>
+                <Protected>
+                  <Order_placed_page />
+                </Protected>
+              </Suspense>
+            }
+          />
+          <Route
+            path="/order_track"
+            element={
+              <Suspense fallback={<Loader />}>
+                <Order_track_page />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/generate/invoice"
+            element={
+              <Suspense fallback={<Loader />}>
+                <Invoice />
+              </Suspense>
+            }
+          />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 }
 

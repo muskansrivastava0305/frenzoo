@@ -135,7 +135,7 @@ function CartPage() {
                 <div className="flex justify-between gap-2 mt-4 items-start py-4">
                   {/* product info */}
                   <div className="flex w-[40%] items-start gap-1 sm:gap-2">
-                    <img
+                    <img loading="lazy"
                       className="pt-1"
                       src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
                       alt=""
@@ -232,7 +232,7 @@ function CartPage() {
                           className="flex justify-between gap-2 mt-4 items-start"
                         >
                           <div className="flex w-[40%] items-start gap-1 sm:gap-2">
-                            <img
+                            <img loading="lazy"
                               className="pt-1"
                               src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
                               alt=""
@@ -334,7 +334,7 @@ function CartPage() {
             </div>
           </div>
           <div className="w-[95%] absolute bottom-0 left-1/2 -translate-x-1/2">
-            <img
+            <img loading="lazy"
               className="w-full"
               src="https://frenzoo.qrdine-in.com/assets/images/svg/dots-design.svg"
               alt=""
@@ -348,7 +348,7 @@ function CartPage() {
         >
           <div className="flex gap-2 justify-center items-center">
             <div className="flex justify-center items-center w-8 h-8">
-              <img
+              <img loading="lazy"
                 src="https://frenzoo.qrdine-in.com/assets/images/icons/phonepay.png"
                 alt=""
               />
@@ -371,7 +371,7 @@ function CartPage() {
         >
           <div className="flex gap-2 justify-center items-center">
             <div className="flex justify-center items-center w-10 h-10">
-              <img
+              <img loading="lazy"
                 src="https://frenzoo.qrdine-in.com/assets/images/icons/svg/cash.svg"
                 alt=""
               />
