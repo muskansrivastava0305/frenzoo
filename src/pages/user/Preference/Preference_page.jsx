@@ -14,6 +14,7 @@ const MyComponent = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [name, setName] = useState("");
   const [isAnonymousChecked, setIsAnonymousChecked] = useState(false);
+  const [loading , setLoading] = useState(false)
   const checkboxRef = useRef();
   const navigate = useNavigate();
   const dispatch = useDispatch()
@@ -64,6 +65,7 @@ const MyComponent = () => {
   };
 
   const handleOrder = async () => {
+    setLoading(true)
     if (checkboxRef.current.checked) {
       dispatch(addCustomerDetail({name,phone:mobileNumber}))
     } else {
@@ -78,11 +80,16 @@ const MyComponent = () => {
       }
     }
 
-    const response = await axios.post('https://frenzoo.qrdine-in.com/api/v1/place_checkout_order',cart)
+    try {
+      const response = await axios.post('https://frenzoo.qrdine-in.com/api/v1/place_checkout_order',cart)
+      setLoading(false)
       const data = response.data
       dispatch(emptyCart())
       dispatch(addOrderId(data))
       navigate("/place_order_successfully");
+    } catch (error) {
+      setLoading(false)
+    }
   };
 
   return (
@@ -155,7 +162,7 @@ const MyComponent = () => {
         <Bottom_cart_comp
         // price="100.00"
         // item="1"
-        to="/place_order_successfully"
+        loading={loading}
         action="Proceed"
         onClick={handleOrder}
       />
@@ -163,7 +170,7 @@ const MyComponent = () => {
         <Bottom_cart_comp
         // price="100.00"
         // item="1"
-        to="/preference"
+        loading={loading}
         action="Proceed"
         onClick={handleOrder}
       />

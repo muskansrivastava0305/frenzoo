@@ -7,9 +7,13 @@ import {
 } from "../../../Redux/Freatures/User/cartSlice";
 import { Custom_Food } from "../../../components/user";
 
-const ProductAccordion = ({ category, products, expandedProducts, setExpandedProducts }) => {
+const ProductAccordion = ({ category, products, expandedProducts, setExpandedProducts , product_type , bestSeller }) => {
   // const [expandedProducts, setExpandedProducts] = useState({});
   const [isOpen, setIsOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(() => {
+  //   const savedState = localStorage.getItem(`isOpen-${category}`);
+  //   return savedState !== null ? JSON.parse(savedState) : true;
+  // });
   const [isCustomFoodComp, setCustomFoodComp] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const contentRef = useRef(null);
@@ -20,6 +24,7 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
   };
 
   useEffect(() => {
+    // localStorage.setItem(`isOpen-${category}`, JSON.stringify(isOpen));
     if (contentRef.current) {
       if (isOpen) {
         contentRef.current.style.height = `${contentRef.current.scrollHeight}px`;
@@ -27,7 +32,7 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
         contentRef.current.style.height = "0px";
       }
     }
-  }, [isOpen]);
+  }, [isOpen , products , product_type , bestSeller ,category]);
 
   const handleShowCustomFood = (product) => {
     setSelectedProduct(product);

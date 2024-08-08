@@ -102,8 +102,8 @@ function Home_page_content() {
                   />
                   Non Veg
                 </button>
-              )}
-             {  
+              )} 
+              
               <button onClick={()=> setBestSeller(!bestSeller)} 
               className={`${bestSeller ? " border-[#f5f5f5]" : "bg-[#ffe395]  border-[#ffe395]"} flex justify-center items-center border rounded-md text-sm gap-2 p-2 `}>
               <img
@@ -112,7 +112,7 @@ function Home_page_content() {
               />
               Best Seller
             </button>
-             }
+
             </div>
             <div>
             {
@@ -139,6 +139,8 @@ function Home_page_content() {
                 {category && category.categories?.length > 0
                   ? category.categories.map((item) => (
                       <ProductAccordion
+                        product_type={product_type}
+                        bestSeller={bestSeller}
                         key={item.categoryname}
                         category={item.categoryname}
                         products={item.products}
