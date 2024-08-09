@@ -152,7 +152,7 @@ function Home_page_content() {
                 <div className="text-xl text-black font-bold">Recommended</div>
               </div>
               {
-                loading ? <Loading/> : (
+                loading ? <Loading className={"mt-10 border-black"}/> : (
                   <div className="pb-8">
                 {category && category.categories?.length > 0
                   ? category.categories.map((item) => (

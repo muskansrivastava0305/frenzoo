@@ -2,7 +2,6 @@
 .loader {
     width: 20px;
     height: 20px;
-    border: 2px solid #020202;
     border-bottom-color: transparent;
     border-radius: 50%;
     display: inline-block;

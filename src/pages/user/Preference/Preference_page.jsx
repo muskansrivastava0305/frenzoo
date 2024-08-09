@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Bottom_cart_comp } from "../../../components/user";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addCustomerDetail, addOrderId, emptyCart } from "../../../Redux/Freatures/User/cartSlice";
+import {
+  addCustomerDetail,
+  addOrderId,
+  emptyCart,
+} from "../../../Redux/Freatures/User/cartSlice";
 import axios from "axios";
 
 const MyComponent = () => {
@@ -10,16 +14,16 @@ const MyComponent = () => {
   const [isCheckboxDisable, setIsCheckboxDisable] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);
-  const [isValid, setIsValid] = useState(false)
+  const [isValid, setIsValid] = useState(false);
   const [mobileNumber, setMobileNumber] = useState("");
   const [name, setName] = useState("");
   const [isAnonymousChecked, setIsAnonymousChecked] = useState(false);
-  const [loading , setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const checkboxRef = useRef();
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const  cart = useSelector(state => state.cart)
+  const cart = useSelector((state) => state.cart);
 
   const handleInputEvent = () => {
     setIsCheckboxDisable(true);
@@ -35,10 +39,10 @@ const MyComponent = () => {
         setIsCheckboxDisable(false);
       }
       setNameError(false);
-      setIsValid(true)
-    }else{
-      setNameError(true)
-      setIsValid(false)
+      setIsValid(true);
+    } else {
+      setNameError(true);
+      setIsValid(false);
     }
   };
 
@@ -52,10 +56,10 @@ const MyComponent = () => {
         setIsCheckboxDisable(false);
       }
       setPhoneError(false);
-      setIsValid(true)
-    }else{
-      setPhoneError(true)
-      setIsValid(false)
+      setIsValid(true);
+    } else {
+      setPhoneError(true);
+      setIsValid(false);
     }
   };
 
@@ -65,30 +69,45 @@ const MyComponent = () => {
   };
 
   const handleOrder = async () => {
-    setLoading(true)
+    setLoading(true);
     if (checkboxRef.current.checked) {
-      dispatch(addCustomerDetail({name,phone:mobileNumber}))
+      dispatch(addCustomerDetail({ name, phone: mobileNumber }));
+      setIsValid(true);
     } else {
       if (name.length === 0) {
         setNameError(true);
-      } 
+      }
       if (mobileNumber.length !== 10) {
         setPhoneError(true);
-      }
-      else {
-        dispatch(addCustomerDetail({ name, phone:mobileNumber }))
+      } else {
+        dispatch(addCustomerDetail({ name, phone: mobileNumber }));
+        setIsValid(true);
       }
     }
 
     try {
-      const response = await axios.post('https://frenzoo.qrdine-in.com/api/v1/place_checkout_order',cart)
-      setLoading(false)
-      const data = response.data
-      dispatch(emptyCart())
-      dispatch(addOrderId(data))
-      navigate("/place_order_successfully");
+      if (isValid) {
+        const response = await axios.post(
+          "https://frenzoo.qrdine-in.com/api/v1/place_checkout_order",
+          cart
+        );
+        setLoading(false);
+        const data = response.data;
+        if (cart.paymentMethod === "phonepe") {
+          dispatch(emptyCart());
+          dispatch(addOrderId(data));
+          window.location.href = data.url;
+          
+        } else if(cart.paymentMethod === 'cash') {
+          dispatch(emptyCart());
+          dispatch(addOrderId(data));
+          navigate("/place_order_successfully");
+        }
+      }
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -158,23 +177,13 @@ const MyComponent = () => {
         </button>
       </div>
 
-      {isValid ? (
-        <Bottom_cart_comp
-        // price="100.00"
-        // item="1"
+      {/* {isValid && ( */}
+      <Bottom_cart_comp
         loading={loading}
         action="Proceed"
         onClick={handleOrder}
       />
-      ): (
-        <Bottom_cart_comp
-        // price="100.00"
-        // item="1"
-        loading={loading}
-        action="Proceed"
-        onClick={handleOrder}
-      />
-      )}
+      {/* )} */}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addTotalAmount, selectTotalItemCount, selectTotalPrice } from '../../../Redux/Freatures/User/cartSlice'
+import Loading from '../../Loading'
 
 function Bottom_cart_comp({ action , to="" , onClick , loading}) {
   const dispatch = useDispatch()
@@ -23,7 +24,7 @@ function Bottom_cart_comp({ action , to="" , onClick , loading}) {
       <div className=" font-semibold text-orange-400">₹ {Number(totalAmount)}</div>
       <div className=" text-sm  text-white"> {totalCount} item added</div>
     </div>
-    <Link to={`${to}?${tableAndBranch}`} className=" bg-orange-400 p-2 flex justify-center items-center text-white rounded-md text-sm">{ loading ? "Loading" : action}</Link>
+    <Link to={`${to}?${tableAndBranch}`} className=" bg-orange-400 p-2 flex justify-center items-center text-white rounded-md text-sm">{ loading ? <Loading className=" border-white"/> : action}</Link>
   </button>
   )
 }

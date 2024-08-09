@@ -112,7 +112,7 @@ function App() {
             }
           />
           <Route
-            path="/generate/invoice"
+            path="/generate/invoice/:order_id/:branch_id"
             element={
               <Suspense fallback={<Loader />}>
                 <Invoice />

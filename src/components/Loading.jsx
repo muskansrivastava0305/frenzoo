@@ -2,8 +2,8 @@ import React from "react";
 import "./loader.css"
 
 function Loading({className}) {
-  return <div className=" flex justify-center items-center mt-10">
-    <span className={`${className} loader`}></span>
+  return <div className={` flex justify-center items-center`}>
+    <span className={` ${className} border-2 loader`}></span>
   </div>
 }
 

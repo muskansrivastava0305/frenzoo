@@ -9,7 +9,7 @@ function Order_placed_page() {
     setTimeout(() => {
       navigate('/order_track')
     }, 3000);
-  })
+  },[])
   return (
     <div className=" h-screen md:h-full w-full px-3 sm:px-5 flex-col flex justify-center items-center">
        <div className=" w-5/6 sm:w-1/2 md:w-1/3">
