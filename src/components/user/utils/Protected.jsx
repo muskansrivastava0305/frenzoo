@@ -9,16 +9,30 @@ function Protected({ children }) {
   const tableAndBranch = `/?table=${table}&branch_id=${branch_id}`;
   const restrictedPaths = ["/cart_items", "/preference", "/order_track"];
 
-  if (order_id !== null) {
-    return <Navigate to="/order_track">{children}</Navigate>;
+  if (order_id) {
+    return <Navigate to={`/order_track${tableAndBranch}`}>{children}</Navigate>;
   }
-   if (products?.length <= 0 && restrictedPaths.includes(location.pathname)) {
+  if (products?.length <= 0 && restrictedPaths.includes(location.pathname)) {
     return <Navigate to={tableAndBranch} />;
   }
-
-    return <>{children}</>;
+  return <>{children}</>;
 
   
 }
 
-export default Protected;
+function OrderProtected({children}){
+  const { products , order_id, table, branch_id } = useSelector((state) => state.cart);
+  const tableAndBranch = `/?table=${table}&branch_id=${branch_id}`;
+
+  if(!order_id){
+    return <Navigate to={tableAndBranch}>{children}</Navigate>;
+  }else{
+   return <>{children}</>
+  }
+}
+
+export {
+  Protected,
+  OrderProtected
+
+};

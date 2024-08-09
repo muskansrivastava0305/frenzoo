@@ -97,7 +97,7 @@ const MyComponent = () => {
           dispatch(emptyCart());
           dispatch(addOrderId(data));
           window.location.href = data.url;
-          
+
         } else if(cart.paymentMethod === 'cash') {
           dispatch(emptyCart());
           dispatch(addOrderId(data));

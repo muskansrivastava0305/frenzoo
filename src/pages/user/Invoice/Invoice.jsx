@@ -1,13 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { addOrderId } from "../../../Redux/Freatures/User/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addOrderId, emptyCart } from "../../../Redux/Freatures/User/cartSlice";
 import moment from "moment";
 import Loader from "../../../components/Loader";
 import { useParams } from "react-router-dom";
 
 function Invoice() {
   // const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch()
   const cart = useParams()
   const [data, setData] = useState({});
   const [loading , setLoading ] = useState(false)
@@ -34,6 +35,7 @@ function Invoice() {
 
   useEffect(() => {
     getInvoice();
+    dispatch(emptyCart())
   }, [cart]);
 
   console.log(data);

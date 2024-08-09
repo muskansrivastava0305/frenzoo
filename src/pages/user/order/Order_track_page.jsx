@@ -7,7 +7,7 @@ import { emptyCart } from "../../../Redux/Freatures/User/cartSlice";
 
 function Order_track_page() {
   const cart = useSelector((state) => state.cart);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({});
   const navigate = useNavigate();
@@ -19,8 +19,8 @@ function Order_track_page() {
       );
       const data = response.data;
       if (data?.order_status === "completed") {
-        dispatch(emptyCart())
         navigate(`/generate/invoice/${data?.order_id}/${data?.branch_id}`);
+        // dispatch(emptyCart());  // change in useeffect hoosk in invoice.jsx page . 
       }
       setData(data);
     } catch (error) {
@@ -36,12 +36,13 @@ function Order_track_page() {
     getOrderStatus(true);
 
     return () => clearInterval(statusInterval); // Clear interval on component unmount
-
   }, [data?.order_status]); // Add data.order_status as dependency
 
-  async function handlePayment(){
-    const response = await axios.get(`https://frenzoo.qrdine-in.com/api/v1/phonePe/${cart?.order_id}`)
-    window.location.href = response.data
+  async function handlePayment() {
+    const response = await axios.get(
+      `https://frenzoo.qrdine-in.com/api/v1/phonePe/${cart?.order_id}`
+    );
+    window.location.href = response.data;
   }
 
   return (
@@ -99,51 +100,6 @@ function Order_track_page() {
               </div>
             )}{" "}
           </div>
-          {/* Placed */}
-          {/* <div className="flex justify-between ">
-            <div>
-              <div
-                className={` ${
-                  data?.order_status === "placed" && "text-white"
-                } flex justify-center items-center gap-3`}
-              >
-                <i
-                  className={` ${
-                    data?.order_status === "placed"
-                      ? "bg-orange-500  border-orange-500"
-                      : "bg-gray-400  border-gray-400 "
-                  } text-lg border text-white rounded-full text-whiteborder fa-regular fa-circle-check`}
-                ></i>
-                <div
-                  className={`${
-                    data?.order_status === "placed"
-                      ? " text-orange-500 "
-                      : "text-gray-600"
-                  } text-[15px]`}
-                >
-                  placed
-                </div>
-              </div>
-              <div
-                className={` ${
-                  data?.order_status === "placed"
-                    ? "border-l-orange-500"
-                    : "bg-l-gray-400  border-l-gray-400 "
-                } my-1 ml-2 border-l-2  border-dashed h-10`}
-              ></div>
-            </div>
-            {data?.order_status === "placed" && (
-              <div
-                className={`${
-                  data?.order_status === "placed"
-                    ? " text-orange-500 "
-                    : "text-gray-600"
-                } text-sm`}
-              >
-                {moment(data?.updated_at).format("LT")}
-              </div>
-            )}
-          </div> */}
           {/* confirmed */}
           <div className="flex justify-between ">
             <div>
@@ -189,51 +145,6 @@ function Order_track_page() {
               </div>
             )}
           </div>
-          {/* waiting */}
-          {/* <div className="flex justify-between ">
-            <div>
-              <div
-                className={` ${
-                  data?.order_status === "waiting" && "text-white"
-                } flex justify-center items-center gap-3`}
-              >
-                <i
-                  className={` ${
-                    data?.order_status === "waiting"
-                      ? "bg-orange-500  border-orange-500"
-                      : "bg-gray-400  border-gray-400 "
-                  } text-lg border text-white rounded-full text-whiteborder fa-regular fa-circle-check`}
-                ></i>
-                <div
-                  className={`${
-                    data?.order_status === "waiting"
-                      ? " text-orange-500 "
-                      : "text-gray-600"
-                  } text-[15px]`}
-                >
-                  waiting
-                </div>
-              </div>
-              <div
-                className={` ${
-                  data?.order_status === "waiting"
-                    ? "border-l-orange-500"
-                    : "bg-l-gray-400  border-l-gray-400 "
-                } my-1 ml-2 border-l-2  border-dashed h-10`}
-              ></div>
-            </div>
-            {data?.order_status === "waiting" && (
-              <div
-                className={`${
-                  data?.order_status === "waiting"
-                    ? " text-orange-500 "
-                    : "text-gray-600"
-                } text-sm`}
-              >
-                {moment(data?.updated_at).format("LT")}
-              </div>
-            )}
-          </div> */}
           {/* cooking */}
           <div className="flex justify-between ">
             <div>
@@ -349,13 +260,6 @@ function Order_track_page() {
                   served
                 </div>
               </div>
-              {/* <div
-                className={` ${
-                  data?.order_status === "served"
-                    ? "border-l-orange-500"
-                    : "bg-l-gray-400  border-l-gray-400 "
-                } my-1 ml-2 border-l-2  border-dashed h-10`}
-              ></div> */}
             </div>
             {data?.order_status === "served" && (
               <div
@@ -369,60 +273,23 @@ function Order_track_page() {
               </div>
             )}
           </div>
-          {/* completed */}
-          {/* <div className="flex justify-between ">
-            <div>
-              <div
-                className={` ${
-                  data?.order_status === "completed" && "text-white"
-                } flex justify-center items-center gap-3`}
-              >
-                <i
-                  className={` ${
-                    data?.order_status === "completed"
-                      ? "bg-orange-500  border-orange-500"
-                      : "bg-gray-400  border-gray-400 "
-                  } text-lg border text-white rounded-full text-whiteborder fa-regular fa-circle-check`}
-                ></i>
-                <div
-                  className={`${
-                    data?.order_status === "completed"
-                      ? " text-orange-500 "
-                      : "text-gray-600"
-                  } text-[15px]`}
-                >
-                  completed
-                </div>
-              </div>
-            </div>
-            {data?.order_status === "completed" && (
-              <div
-                className={`${
-                  data?.order_status === "completed"
-                    ? " text-orange-500 "
-                    : "text-gray-600"
-                } text-sm`}
-              >
-                {moment(data?.updated_at).format("LT")}
-              </div>
-            )}
-          </div> */}
           <div className=" border border-dashed my-8"></div>
-        {
-          data?.payment_status !== 'paid' && (
+          {data?.payment_status !== "paid" && (
             <div className=" gap-5 flex">
-            <div className=" bg-green-700 text-sm sm:text-md w-1/2 sm:w-44 flex justify-center items-center rounded-md text-white px-4 py-2">
-              <button onClick={handlePayment} className=" cursor-pointer">Pay Online</button>
+              <button
+                onClick={handlePayment}
+                className=" bg-green-700 cursor-pointer text-sm sm:text-md w-1/2 sm:w-44 flex justify-center items-center rounded-md text-white px-4 py-2"
+              >
+                <div>Pay Online</div>
+              </button>
+              <div className=" bg-yellow-400 w-1/2 sm:w-96 flex justify-center items-center rounded-md text-white px-4 py-2">
+                <Link>
+                  Cash{" "}
+                  <i className=" rounded-full fa-regular fa-circle-check"></i>
+                </Link>
+              </div>
             </div>
-            <div className=" bg-yellow-400 w-1/2 sm:w-96 flex justify-center items-center rounded-md text-white px-4 py-2">
-              <Link>
-                Cash{" "}
-                <i className=" rounded-full fa-regular fa-circle-check"></i>
-              </Link>
-            </div>
-          </div>
-          )
-        }
+          )}
         </div>
       </div>
     </>

@@ -13,6 +13,7 @@ import {
   selectTotalPrice,
 } from "../../../Redux/Freatures/User/cartSlice";
 import Choice_comp from "../../../components/user/utils/Choice_comp";
+import toast from "react-hot-toast";
 
 function CartPage() {
   const cookingIns = useSelector((state) => state.cart.cookingInstruction);
@@ -121,6 +122,14 @@ function CartPage() {
     }
   }, [selectedPayment]);
 
+
+  function handleOrder(){
+    if(!selectedPayment){
+      toast.success("Please select a payment method before proceeding.")
+    return;
+    }
+    navigate(`/preference?table=${table}&branch_id=${branch_id}`)
+  }
   return (
     <div className="flex justify-center px-2 sm:px-4 w-full">
       <div className="w-full sm:w-[34rem] mb-[5rem] px-0 sm:px-4 py-4">
@@ -385,11 +394,10 @@ function CartPage() {
       </div>
 
       <Bottom_cart_comp
-        // price={totalAmount}
-        // item={totalItems}
         // onClick={handleCookingInstruction}
         action="Proceed to Checkout"
-        to="/preference"
+        // to="/preference"
+        onClick={handleOrder}
       />
     </div>
   );

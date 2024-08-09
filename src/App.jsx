@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { isMobileOrTablet } from "./utils/deviceCheck";
-import Protected from "./components/user/utils/Protected";
+import { Protected, OrderProtected } from "./components/user/utils/Protected";
 import Layout from "./Layout";
 import Loader from "./components/Loader";
 // import Home_page_content from "./pages/user/Home/Home_page_content";
@@ -69,7 +69,9 @@ function App() {
             index
             element={
               <Suspense fallback={<Loader />}>
-                <Home_page_content />
+                <Protected>
+                  <Home_page_content />
+                </Protected>
               </Suspense>
             }
           />
@@ -97,9 +99,9 @@ function App() {
             path="/place_order_successfully"
             element={
               <Suspense fallback={<Loader />}>
-                <Protected>
+                <OrderProtected>
                   <Order_placed_page />
-                </Protected>
+                </OrderProtected>
               </Suspense>
             }
           />
@@ -107,7 +109,9 @@ function App() {
             path="/order_track"
             element={
               <Suspense fallback={<Loader />}>
-                <Order_track_page />
+                <OrderProtected>
+                  <Order_track_page />
+                </OrderProtected>
               </Suspense>
             }
           />
