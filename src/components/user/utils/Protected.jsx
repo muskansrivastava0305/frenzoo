@@ -25,7 +25,11 @@ function OrderProtected({children}){
   const tableAndBranch = `/?table=${table}&branch_id=${branch_id}`;
 
   if(!order_id){
-    return <Navigate to={tableAndBranch}>{children}</Navigate>;
+    if(!order_id && !branch_id){
+      return <Navigate to="/">{children}</Navigate>;
+    }else{
+      return <Navigate to={tableAndBranch}>{children}</Navigate>;
+    }
   }else{
    return <>{children}</>
   }

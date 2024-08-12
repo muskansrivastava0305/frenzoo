@@ -8,6 +8,7 @@ import {
   emptyCart,
 } from "../../../Redux/Freatures/User/cartSlice";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const MyComponent = () => {
   const [isInputDisable, setIsInputDisable] = useState(false);
@@ -46,47 +47,83 @@ const MyComponent = () => {
     }
   };
 
+  // const handleMobileNumberChange = (e) => {
+  //   const value = e.target.value;
+  //   if (/^\d{0,10}$/.test(value)) {
+  //       setMobileNumber(value);
+  //       setIsValid(true)
+  //     if (value || name) {
+  //       setIsCheckboxDisable(true);
+  //     } else {
+  //       setIsCheckboxDisable(false);
+  //     }
+  //     setPhoneError(false);
+  //     setIsValid(true);
+  //   } else {
+  //     setPhoneError(true);
+  //     setIsValid(false);
+  //   }
+  // };
   const handleMobileNumberChange = (e) => {
     const value = e.target.value;
+  
+    // Allow only digits and limit to 10 characters
     if (/^\d{0,10}$/.test(value)) {
       setMobileNumber(value);
-      if (value || name) {
+  
+      // Check if the number has exactly 10 digits
+      if (value.length === 10) {
+        setPhoneError(false);
+        setIsValid(true);
         setIsCheckboxDisable(true);
       } else {
+        setPhoneError(true);
+        setIsValid(false);
         setIsCheckboxDisable(false);
       }
-      setPhoneError(false);
-      setIsValid(true);
     } else {
       setPhoneError(true);
       setIsValid(false);
     }
   };
+  
 
   const handleAnonymous = () => {
     setIsAnonymousChecked(!isAnonymousChecked);
     setIsInputDisable(!isAnonymousChecked);
   };
 
-  const handleOrder = async () => {
-    setLoading(true);
+  useEffect(()=>{
+
     if (checkboxRef.current.checked) {
       dispatch(addCustomerDetail({ name, phone: mobileNumber }));
+      setNameError(false)
+      setPhoneError(false)
       setIsValid(true);
     } else {
       if (name.length === 0) {
         setNameError(true);
+        setIsValid(false);
+        // toast.error("name field must be required")
       }
       if (mobileNumber.length !== 10) {
         setPhoneError(true);
+        setIsValid(false);
+        // toast.error("Phone no must be required")
       } else {
         dispatch(addCustomerDetail({ name, phone: mobileNumber }));
         setIsValid(true);
+        setPhoneError(false)
+        setNameError(false)
       }
     }
 
+  },[name , mobileNumber , isAnonymousChecked ])
+
+  const handleOrder = async () => {
+    setLoading(true);
     try {
-      if (isValid) {
+      if (isValid && !nameError && !phoneError) {
         const response = await axios.post(
           "https://frenzoo.qrdine-in.com/api/v1/place_checkout_order",
           cart
@@ -101,6 +138,7 @@ const MyComponent = () => {
         } else if(cart.paymentMethod === 'cash') {
           dispatch(emptyCart());
           dispatch(addOrderId(data));
+          toast.success("Order placed successfully")
           navigate("/place_order_successfully");
         }
       }
@@ -143,7 +181,7 @@ const MyComponent = () => {
               Mobile Number
             </label>
             <input
-              type="text"
+              type="phone"
               disabled={isInputDisable}
               onInput={handleInputEvent}
               value={mobileNumber}

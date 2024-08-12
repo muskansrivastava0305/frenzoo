@@ -6,6 +6,7 @@ import {
   decrementProduct,
 } from "../../../Redux/Freatures/User/cartSlice";
 import { Custom_Food } from "../../../components/user";
+import toast from "react-hot-toast";
 
 const ProductAccordion = ({ category, products, expandedProducts, setExpandedProducts , product_type , bestSeller }) => {
   // const [expandedProducts, setExpandedProducts] = useState({});
@@ -42,6 +43,7 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
   const handleAddProduct = (product, options) => {
     const customizedProduct = { ...product, ...options };
     dispatch(addProduct(customizedProduct));
+    toast.success("Item added successfully")
     setCustomFoodComp(false);
   };
 

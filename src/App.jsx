@@ -4,6 +4,8 @@ import { isMobileOrTablet } from "./utils/deviceCheck";
 import { Protected, OrderProtected } from "./components/user/utils/Protected";
 import Layout from "./Layout";
 import Loader from "./components/Loader";
+import { messaging } from "./firebase";
+import { getToken, onMessage } from "firebase/messaging";
 // import Home_page_content from "./pages/user/Home/Home_page_content";
 // import CartPage from "./pages/user/Cart/CartPage";
 // import Preference_page from "./pages/user/Preference/Preference_page";
@@ -27,6 +29,7 @@ const Invoice = React.lazy(() => import("./pages/user/Invoice/Invoice"));
 
 function App() {
   const [isMobileOrTabletDevice, setIsMobileOrTabletDevice] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem("token") || '' )
 
   useEffect(() => {
     const checkDevice = () => {
@@ -40,6 +43,31 @@ function App() {
       window.removeEventListener("resize", checkDevice);
     };
   }, [isMobileOrTablet]);
+
+  async function requestPermission(){
+    const permission = await Notification.requestPermission()
+
+    if(permission === 'granted'){
+      // generate token
+     const token = await getToken(messaging,{vapidKey:'BJd4y7lEdcli-201XZcyVcp0Gppq58uK4IjF1HuSK5d-A7nEV6VVKazQMKXSOjcspr1CamzcTjtsVMc_jtzUrLs'})
+     localStorage.setItem('token' ,token)
+    }else if (permission === 'denied'){
+      console.log("you denieed")
+    }
+  }
+
+  useEffect(() => {
+    // Request permission to send notifications
+    requestPermission();
+
+    onMessage(messaging, (payload) => {
+      console.log('Message received. ', payload);
+    })
+    
+  }, []);
+
+
+
 
   if (!isMobileOrTabletDevice) {
     return (

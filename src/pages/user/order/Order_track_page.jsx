@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { emptyCart } from "../../../Redux/Freatures/User/cartSlice";
+import toast from "react-hot-toast";
 
-function Order_track_page() {
+const Order_track_page = React.memo(()=> {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -18,9 +19,20 @@ function Order_track_page() {
         `https://frenzoo.qrdine-in.com/api/v1/order_status?id=${cart?.order_id}`
       );
       const data = response.data;
+
+     if (initialLoad) {
+      toast.success(`Order ${data?.order_status}`);
+    }
+      
       if (data?.order_status === "completed") {
+        toast.success("Invoice gnerated successfully")
         navigate(`/generate/invoice/${data?.order_id}/${data?.branch_id}`);
         // dispatch(emptyCart());  // change in useeffect hoosk in invoice.jsx page . 
+      }else if (data?.order_status === 'Cancelled'){
+       setTimeout(() => {
+        dispatch(emptyCart());  // change in useeffect hoosk in invoice.jsx page . 
+       }, 5000);
+
       }
       setData(data);
     } catch (error) {
@@ -29,6 +41,7 @@ function Order_track_page() {
   }
 
   useEffect(() => {
+    console.log("rerender")
     let statusInterval = setInterval(() => {
       getOrderStatus();
     }, 5000);
@@ -260,7 +273,15 @@ function Order_track_page() {
                   served
                 </div>
               </div>
+              { data?.order_status === "Cancelled" && ( <div
+                className={` ${
+                  data?.order_status === "Ready To serve"
+                    ? "border-l-orange-500"
+                    : "bg-l-gray-400  border-l-gray-400 "
+                } my-1 ml-2 border-l-2  border-dashed h-10`}
+              ></div>)}
             </div>
+            
             {data?.order_status === "served" && (
               <div
                 className={`${
@@ -273,6 +294,49 @@ function Order_track_page() {
               </div>
             )}
           </div>
+          {/* Cancelled */}
+          {
+            data?.order_status === "Cancelled" && (
+              <div className="flex justify-between ">
+                <div>
+                  <div
+                    className={` ${
+                      data?.order_status === "Cancelled" && "text-white"
+                    } flex justify-center items-center gap-3`}
+                  >
+                    <i
+                      className={` ${
+                        data?.order_status === "Cancelled"
+                          ? "bg-orange-500  border-orange-500"
+                          : "bg-gray-400  border-gray-400 "
+                      } text-lg border text-white rounded-full text-whiteborder fa-regular fa-circle-check`}
+                    ></i>
+                    <div
+                      className={`${
+                        data?.order_status === "Cancelled"
+                          ? " text-orange-500 "
+                          : "text-gray-600"
+                      } text-[15px]`}
+                    >
+                      Cancelled
+                    </div>
+                  </div>
+                </div>
+                
+                {data?.order_status === "Cancelled" && (
+                  <div
+                    className={`${
+                      data?.order_status === "Cancelled"
+                        ? " text-orange-500 "
+                        : "text-gray-600"
+                    } text-sm`}
+                  >
+                    {moment(data?.updated_at).format("LT")}
+                  </div>
+                )}
+              </div>
+            )
+          }
           <div className=" border border-dashed my-8"></div>
           {data?.payment_status !== "paid" && (
             <div className=" gap-5 flex">
@@ -294,6 +358,6 @@ function Order_track_page() {
       </div>
     </>
   );
-}
+})
 
 export default Order_track_page;
