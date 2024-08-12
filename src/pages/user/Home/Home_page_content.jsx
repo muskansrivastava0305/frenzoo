@@ -13,6 +13,8 @@ import axios from "axios";
 import DisplayCard from "../utils/DisplayCard";
 import Loader from "../../../components/Loader";
 import Loading from "../../../components/Loading";
+import { ApiUrl } from "../../../Api/ApiConstants";
+import toast from "react-hot-toast";
 
 function Home_page_content() {
   const cart = useSelector((state) => state.cart.products);
@@ -33,7 +35,7 @@ function Home_page_content() {
     setLoading(true)
     await axios
       .get(
-        `https://frenzoo.qrdine-in.com/degitalmenuapi?table=${table}&branch_id=${branchId}&search=${search}&product_type=${product_type}&set_menu=${Number(bestSeller)}`
+        `${ApiUrl.digitalMenu}?table=${table}&branch_id=${branchId}&search=${search}&product_type=${product_type}&set_menu=${Number(bestSeller)}`
       )
       .then((res) => {
         setCategory(res.data);
@@ -140,7 +142,7 @@ function Home_page_content() {
                   }}
                   className=" flex justify-center py-2 items-center border rounded-md text-[13px] sm:text-sm gap-2 px-1 sm:px-2 bg-white "
                 >
-                  Clear filter<i class="fa-solid fa-xmark"></i>
+                  Clear filter<i className="fa-solid fa-xmark"></i>
               </button>
               )
             }

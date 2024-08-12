@@ -9,6 +9,7 @@ import {
 } from "../../../Redux/Freatures/User/cartSlice";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { ApiUrl } from "../../../Api/ApiConstants";
 
 const MyComponent = () => {
   const [isInputDisable, setIsInputDisable] = useState(false);
@@ -124,9 +125,10 @@ const MyComponent = () => {
     setLoading(true);
     try {
       if (isValid && !nameError && !phoneError) {
-        const response = await axios.post(
-          "https://frenzoo.qrdine-in.com/api/v1/place_checkout_order",
-          cart
+        const response = await axios.post(ApiUrl.placeOrder,
+          {
+          ...cart , device_id:localStorage.getItem('token')
+          }
         );
         setLoading(false);
         const data = response.data;
@@ -144,6 +146,7 @@ const MyComponent = () => {
       }
     } catch (error) {
       setLoading(false);
+      toast.error("Failed to place order")
     } finally {
       setLoading(false);
     }

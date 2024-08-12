@@ -7,4 +7,15 @@ export default defineConfig({
   build: {
     outDir: 'dist',
   },
+  server:{
+    port:5173,
+    // get rid of the CORS error
+    proxy:{
+      "/api":{
+        target:"https://frenzoo.qrdine-in.com",
+        changeOrigin:true,
+        secure:true
+      }
+    }
+  }
 })

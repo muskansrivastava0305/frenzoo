@@ -5,6 +5,8 @@ import { addOrderId, emptyCart } from "../../../Redux/Freatures/User/cartSlice";
 import moment from "moment";
 import Loader from "../../../components/Loader";
 import { useParams } from "react-router-dom";
+import { ApiUrl } from "../../../Api/ApiConstants";
+import toast from "react-hot-toast";
 
 function Invoice() {
   // const cart = useSelector((state) => state.cart);
@@ -21,7 +23,7 @@ function Invoice() {
     try {
       setLoading(true)
       const response = await axios.get(
-        `https://frenzoo.qrdine-in.com/api/v1/order_invoice?id=${cart?.order_id}&branch_id=${cart?.branch_id}`
+        `${ApiUrl.invoice}?id=${cart?.order_id}&branch_id=${cart?.branch_id}`
       );
 
       setLoading(false)
@@ -29,7 +31,7 @@ function Invoice() {
       setData(data);
     } catch (error) {
       setLoading(false)
-      console.log(error);
+      toast.error("failed to geneerate invoice")
     }
   }
 
@@ -37,8 +39,6 @@ function Invoice() {
     getInvoice();
     dispatch(emptyCart())
   }, [cart]);
-
-  console.log(data);
   
 
   return loading ? <Loader/> : (
@@ -101,7 +101,7 @@ function Invoice() {
                 <tbody>
                  { data && data?.data?.details?.map((item,index)=>(
                    <tr key={index} className="flex justify-between">
-                   <td className="w-16 font-semibold text-sm">{JSON.parse(item?.product_details).name}</td>
+                   <td className="w-16 break-words font-semibold text-sm">{JSON.parse(item?.product_details).name}</td>
                    <td className="text-start w-12">{Number(item?.price)}</td>
                    <td className="w-12">{Number(item?.quantity)}</td>
                    <td className="w-12">{Number(item?.price) * Number(item?.quantity)}</td>

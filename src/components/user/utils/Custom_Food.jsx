@@ -2,6 +2,7 @@ import { Skeleton } from "@mui/material";
 import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { ApiUrl } from "../../../Api/ApiConstants";
 
 function Custom_Food({ setCustomFoodComp, productId, onAddProduct }) {
   const [items, setItems] = useState(null);
@@ -17,7 +18,7 @@ function Custom_Food({ setCustomFoodComp, productId, onAddProduct }) {
     setIsLoading(true);
     try {
       await axios
-        .get(`https://frenzoo.qrdine-in.com/addons?product_id=${productId}`)
+        .get(`${ApiUrl.addons}?product_id=${productId}`)
         .then((res) => {
           setItems(res.data);
           setIsLoading(false);

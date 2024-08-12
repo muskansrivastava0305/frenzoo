@@ -29,7 +29,6 @@ const Invoice = React.lazy(() => import("./pages/user/Invoice/Invoice"));
 
 function App() {
   const [isMobileOrTabletDevice, setIsMobileOrTabletDevice] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("token") || '' )
 
   useEffect(() => {
     const checkDevice = () => {

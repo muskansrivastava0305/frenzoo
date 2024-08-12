@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { emptyCart } from "../../../Redux/Freatures/User/cartSlice";
 import toast from "react-hot-toast";
+import { ApiUrl } from "../../../Api/ApiConstants";
 
 const Order_track_page = React.memo(()=> {
   const cart = useSelector((state) => state.cart);
@@ -16,13 +17,13 @@ const Order_track_page = React.memo(()=> {
   async function getOrderStatus(initialLoad = false) {
     try {
       const response = await axios.get(
-        `https://frenzoo.qrdine-in.com/api/v1/order_status?id=${cart?.order_id}`
+        `${ApiUrl.orderStatus}?id=${cart?.order_id}`
       );
       const data = response.data;
 
-     if (initialLoad) {
-      toast.success(`Order ${data?.order_status}`);
-    }
+    //  if (initialLoad) {
+    //   toast.success(`Order ${data?.order_status}`);
+    // }
       
       if (data?.order_status === "completed") {
         toast.success("Invoice gnerated successfully")
@@ -36,26 +37,40 @@ const Order_track_page = React.memo(()=> {
       }
       setData(data);
     } catch (error) {
-      console.log(error);
+      toast.error("failed to fetch order status")
     }
   }
 
   useEffect(() => {
-    console.log("rerender")
+    console.log("rerender");
+    
+    getOrderStatus(true);
+    
     let statusInterval = setInterval(() => {
       getOrderStatus();
     }, 5000);
 
-    getOrderStatus(true);
 
     return () => clearInterval(statusInterval); // Clear interval on component unmount
-  }, [data?.order_status]); // Add data.order_status as dependency
+  }, []); // Add data.order_status as dependency
+
+   // Watch for order status changes
+   useEffect(() => {
+    if (data?.order_status) {
+      toast.success(`Order ${data?.order_status}`);
+    }
+  }, [data?.order_status]); // This effect will run whenever order_status changes
+
 
   async function handlePayment() {
+   try {
     const response = await axios.get(
-      `https://frenzoo.qrdine-in.com/api/v1/phonePe/${cart?.order_id}`
+      `${ApiUrl.pay}/${cart?.order_id}`
     );
     window.location.href = response.data;
+   } catch (error) {
+    toast.error("Payment failed")
+   }
   }
 
   return (
