@@ -74,7 +74,7 @@ const ProductAccordion = ({
     if (description.length <= 20) {
       return description;
     }
-    return description.substring(0, 20) + "...";
+    return description.substring(0, 20) + "... ";
   };
 
   return (
@@ -143,7 +143,7 @@ const ProductAccordion = ({
                         onClick={() => handleToggle(item.id)}
                         className="text-[#ff8e2f] mb-2 text-sm"
                       >
-                        {isExpanded ? "Show less" : "Read more"}
+                        {isExpanded ?  "Show less" : " Read more"}
                       </button>
                     )}
                   </div>

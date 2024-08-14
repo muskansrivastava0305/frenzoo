@@ -111,7 +111,7 @@ function CartPage() {
     if (description.length <= maxLength) {
       return description;
     }
-    return description.substring(0, maxLength) + "...";
+    return description.substring(0, maxLength) + "... ";
   };
 
   useEffect(() => {
@@ -130,6 +130,7 @@ function CartPage() {
     }
     navigate(`/preference?table=${table}&branch_id=${branch_id}`)
   }
+  
   return (
     <div className="flex justify-center px-2 sm:px-4 w-full">
       <div className="w-full sm:w-[34rem] mb-[5rem] px-0 sm:px-4 py-4">
@@ -172,8 +173,8 @@ function CartPage() {
                           className="text-[#ff8e2f] text-sm"
                         >
                           {expandedStates[product.id]
-                            ? "Show less"
-                            : "Read more"}
+                            ? " Show less"
+                            : " Read more"}
                         </button>
                         )}
                         {/* <button

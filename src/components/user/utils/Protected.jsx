@@ -35,8 +35,27 @@ function OrderProtected({children}){
   }
 }
 
+
+const MobileOnlyRoute = ({ isMobileOrTabletDevice, children }) => {
+  if (!isMobileOrTabletDevice) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+        <h1 className="text-2xl font-bold text-red-500">
+          Website not supported on this device
+        </h1>
+        <p className="text-gray-700">
+          Please access this website on a mobile or tablet device.
+        </p>
+      </div>
+    );
+  }
+
+  return children;
+}
+
 export {
   Protected,
-  OrderProtected
+  OrderProtected,
+  MobileOnlyRoute
 
 };
