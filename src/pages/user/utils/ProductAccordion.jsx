@@ -8,7 +8,14 @@ import {
 import { Custom_Food } from "../../../components/user";
 import toast from "react-hot-toast";
 
-const ProductAccordion = ({ category, products, expandedProducts, setExpandedProducts , product_type , bestSeller }) => {
+const ProductAccordion = ({
+  category,
+  products,
+  expandedProducts,
+  setExpandedProducts,
+  product_type,
+  bestSeller,
+}) => {
   // const [expandedProducts, setExpandedProducts] = useState({});
   const [isOpen, setIsOpen] = useState(true);
   // const [isOpen, setIsOpen] = useState(() => {
@@ -33,7 +40,7 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
         contentRef.current.style.height = "0px";
       }
     }
-  }, [isOpen , products , product_type , bestSeller ,category]);
+  }, [isOpen, products, product_type, bestSeller, category]);
 
   const handleShowCustomFood = (product) => {
     setSelectedProduct(product);
@@ -43,17 +50,17 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
   const handleAddProduct = (product, options) => {
     const customizedProduct = { ...product, ...options };
     dispatch(addProduct(customizedProduct));
-    toast.success("Item added successfully")
+    toast.success("Item added successfully");
     setCustomFoodComp(false);
   };
 
   const handleIncrement = (id) => {
     // console.log(id)
-    dispatch(incrementProduct({ id  , type:"Product"}));
+    dispatch(incrementProduct({ id, type: "Product" }));
   };
 
   const handleDecrement = (id) => {
-    dispatch(decrementProduct({ id , type:"Product" }));
+    dispatch(decrementProduct({ id, type: "Product" }));
   };
 
   const handleToggle = (id) => {
@@ -107,14 +114,14 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
                     <div className="pb-1">
                       {item.product_type === "veg" && (
                         <img
-                        loading='lazy'
+                          loading="lazy"
                           src="https://frenzoo.qrdine-in.com/assets/images/icons/veg.svg"
                           alt="category"
                         />
                       )}
                       {item.product_type === "non_veg" && (
                         <img
-                        loading="lazy"
+                          loading="lazy"
                           src="https://frenzoo.qrdine-in.com/assets/images/svg/nonveg.svg"
                           alt="category"
                         />
@@ -131,35 +138,33 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
                         ? item.description
                         : getTruncatedDescription(item.description)}
                     </div>
-                    <button
-                      onClick={() => handleToggle(item.id)}
-                      className="text-[#ff8e2f] mb-2 text-sm"
-                    >
-                      {isExpanded ? "Show less" : "Read more"}
-                    </button>
+                    {item.description.length > 20 && (
+                      <button
+                        onClick={() => handleToggle(item.id)}
+                        className="text-[#ff8e2f] mb-2 text-sm"
+                      >
+                        {isExpanded ? "Show less" : "Read more"}
+                      </button>
+                    )}
                   </div>
                 </div>
                 <div className="w-36 flex justify-center flex-col items-center h-36 rounded-md">
-                 <div className=" w-24 h-24">
-                 <img
-                    loading="lazy"
-                    className="overflow-auto h-full object-cover object-center w-full rounded-md"
-                    src={item?.image_url}
-                    alt=""
-                  />
-                 </div>
+                  <div className=" w-24 h-24">
+                    <img
+                      loading="lazy"
+                      className="overflow-auto h-full object-cover object-center w-full rounded-md"
+                      src={item?.image_url}
+                      alt=""
+                    />
+                  </div>
                   <div className="flex justify-center mt-2">
                     {productInCart ? (
                       <div className="border-[#ff8e2f] w-24 flex gap-4 justify-center items-center text-[#ff8e2f] rounded-md border px-4 py-2">
-                        <button
-                          onClick={() => handleDecrement(item.id)}
-                        >
+                        <button onClick={() => handleDecrement(item.id)}>
                           <i className="fa-solid fa-minus"></i>
                         </button>
                         <div>{productInCart.quantity}</div>
-                        <button
-                          onClick={() => handleIncrement(item.id)}
-                        >
+                        <button onClick={() => handleIncrement(item.id)}>
                           <i className="fa-solid fa-plus"></i>
                         </button>
                       </div>
@@ -183,7 +188,6 @@ const ProductAccordion = ({ category, products, expandedProducts, setExpandedPro
             productId={selectedProduct.id}
             setCustomFoodComp={setCustomFoodComp}
             onAddProduct={handleAddProduct}
-
           />
         )}
       </div>

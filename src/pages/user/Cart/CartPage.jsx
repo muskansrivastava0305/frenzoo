@@ -166,7 +166,8 @@ function CartPage() {
                             {getTruncatedDescription(product.description)}
                           </div>
                         )}
-                        <button
+                        {product.description.length>10 && (
+                          <button
                           onClick={() => handleToggle(product.id)}
                           className="text-[#ff8e2f] text-sm"
                         >
@@ -174,6 +175,15 @@ function CartPage() {
                             ? "Show less"
                             : "Read more"}
                         </button>
+                        )}
+                        {/* <button
+                          onClick={() => handleToggle(product.id)}
+                          className="text-[#ff8e2f] text-sm"
+                        >
+                          {expandedStates[product.id]
+                            ? "Show less"
+                            : "Read more"}
+                        </button> */}
                       </div>
                     </div>
                   </div>

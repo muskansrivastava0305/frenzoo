@@ -118,12 +118,23 @@ const cartReducer = createSlice({
 
 export const { addProduct, incrementProduct, decrementProduct, emptyCart, addCookingInstruction, addOrderId, addTotalAmount, addPaymentMethod, addTableAndBranch, addonDecrement, addonIncrement, addCustomerDetail } = cartReducer.actions;
 
-export const selectTotalPrice = state => {
-    const productPrice = state.cart.products?.reduce((total, product) => total + (product.price * product.quantity), 0);
-    const addonExtrasPrice = state.cart.products?.map((product) => {
-        return product?.addonExtras.reduce((total, product) => total + (product.price * product.quantity), 0)
-    })
-    return parseFloat(productPrice) + parseFloat(addonExtrasPrice[0])
+// export const selectTotalPrice = state => {
+//     const productPrice = state.cart.products.reduce((total, product) => total + (product.price * product.quantity), 0);
+//     const addonExtrasPrice = state.cart.products.map((product) => {
+//         return product?.addonExtras.reduce((total, product) => total + (product.price * product.quantity), 0)
+//     })
+//     return parseFloat(productPrice) + parseFloat(addonExtrasPrice[0])
+// };
+
+export const selectTotalPrice = (state) => {
+    const productPrice = state.cart.products.reduce((total, product) => total + (product.price * product.quantity), 0);
+    
+    const addonExtrasPrice = state.cart.products.reduce((totalAddon, product) => {
+        const productAddonTotal = product?.addonExtras?.reduce((total, addon) => total + (addon.price * addon.quantity), 0) || 0;
+        return totalAddon + productAddonTotal;
+    }, 0);
+
+    return parseFloat(productPrice + addonExtrasPrice);
 };
 
 export const selectTotalItemCount = state => {
