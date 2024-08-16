@@ -84,6 +84,9 @@ function Dashboard() {
             </div>
 
           </div>
+          <div>
+            <DashboardTable/>
+          </div>
         </div>
       </div>
     </div>
