@@ -1,43 +1,41 @@
-import React from 'react'
-import { Sidebarmenu, RecentOrder, BusinessAnalyticsCard } from "../../components";
+import React, { useContext } from "react";
+import {
+  Sidebarmenu,
+  BusinessAnalyticsCard,
+  DashboardTable,
+  RecenetOrderComp,
+} from "../../components";
+import { myContext } from "@/Context/Context";
 
 function Dashboard() {
+  const {isOpen ,setIsOpen} = useContext(myContext)
   const business_analytics = [
     {
       image: "sales.png",
       title: "sales",
-      value: `₹${0}`
+      value: `₹${0}`,
     },
     {
       image: "pending.png",
       title: "Pending",
-      value: 0
-    }, {
+      value: 0,
+    },
+    {
       image: "confirmed.png",
       title: "Confirmed",
-      value: 0
-    }, {
+      value: 0,
+    },
+    {
       image: "cooking.png",
       title: "Cooking",
-      value: 0
+      value: 0,
     },
-  ]
-
-  const RecentOrderData = [
-
-    {
-      orderId: "Order# 100026",
-      dateTime: "15-08-24, 06:17 PM",
-      status: "Completed"
-
-    },
-  ]
-
+  ];
 
   return (
     <div className=" w-full flex">
       <Sidebarmenu />
-      <div className=" w-full  p-5">
+      <div className={`  w-full  p-5`}>
         <div className=" pr-6 pb-6 text-2xl text-[#ED4C79] font-semibold">
           <h1>Welcome QRDine-In</h1>
         </div>
@@ -63,34 +61,16 @@ function Dashboard() {
               />
             ))}
 
-
             <div></div>
           </div>
-
-
-          {/* //Recent Order */}
-
-          <div className=' float-right mt-8 w-full sm:w-80 '>
-            <div className=' flex justify-between mr-8'>
-              <h1 className=' font-semibold'>Recent Order</h1>
-              <p className=' font-semibold text-blue-800 '>View All</p>
-            </div>
-
-            <div className=' mt-8 overflow-y-scroll h-96 overflow-x-hidden'>
-              {RecentOrderData?.map((item, index) => (
-                <RecentOrder key={index} orderId={item.orderId} dateTime={item.dateTime} status={item.status} />
-              ))
-              }
-            </div>
-
-          </div>
-          <div>
-            <DashboardTable/>
-          </div>
         </div>
+        {/* //Recent Order */}
+
+        <RecenetOrderComp />
+        <DashboardTable />
       </div>
     </div>
-  )
+  );
 }
 
 export default Dashboard;

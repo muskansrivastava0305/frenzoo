@@ -11,19 +11,22 @@ import { Provider } from "react-redux";
 import { PrimeReactProvider } from "primereact/api";
 import { persistor, store } from "./Redux/Store.js";
 import { PersistGate } from "redux-persist/integration/react";
+import MyProvider from "./Context/Context.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PrimeReactProvider>
-        <PersistGate loading={null} persistor={persistor}>
-          <BrowserRouter>
-            <App />
-            <Toaster />
-          </BrowserRouter>
-        </PersistGate>
-      </PrimeReactProvider>
-    </Provider>
+    <MyProvider>
+      <Provider store={store}>
+        <PrimeReactProvider>
+          <PersistGate loading={null} persistor={persistor}>
+            <BrowserRouter>
+              <App />
+              <Toaster />
+            </BrowserRouter>
+          </PersistGate>
+        </PrimeReactProvider>
+      </Provider>
+    </MyProvider>
   </React.StrictMode>
 );
 

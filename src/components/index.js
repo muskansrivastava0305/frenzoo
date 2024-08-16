@@ -5,7 +5,7 @@ import BusinessAnalyticsCard from "./admin/BusinessAnalyticsCard"
 import RecentOrder from "./admin/RecentOrder"
 import Sidebarmenu from "./admin/Sidebar"
 import DashboardTable from "./admin/DashboardTable"
-
+import RecenetOrderComp from "./admin/RecenetOrderComp"
 
 export {
     Header,
@@ -14,5 +14,6 @@ export {
     BusinessAnalyticsCard,
     Sidebarmenu,
     DashboardTable,
-    RecentOrder
+    RecentOrder,
+    RecenetOrderComp
 }
