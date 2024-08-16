@@ -1,20 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 
-function Sidebar() {
+function Sidebarmenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const navitems = [
-    {
-      label: "Dashboard",
-      slug: "/admin/dashboard",
-      icon: <i class="fa-solid fa-house"></i>,
-    },
-    {
-      label: "Analytics",
-      slug: "/admin/analytics",
-      icon: <i class="fa-solid fa-chart-simple"></i>,
-    },
-  ];
   function handleNavbar() {
     setIsOpen(!isOpen);
   }
@@ -22,6 +10,7 @@ function Sidebar() {
   function closeNavbar() {
     setIsOpen(false);
   }
+
   return (
     <div
       onMouseEnter={handleNavbar}
@@ -67,4 +56,4 @@ function Sidebar() {
   );
 }
 
-export default Sidebar;
+export default Sidebarmenu
