@@ -1,5 +1,5 @@
 import React from "react";
-import { BusinessAnalyticsCard } from "../../components";
+import { BusinessAnalyticsCard, DashboardTable } from "../../components";
 import { Sidebarmenu } from "../../components";
 
 function Dashboard() {
@@ -55,7 +55,9 @@ function Dashboard() {
               />
             ))}
           </div>
-          <div></div>
+          <div>
+            <DashboardTable/>
+          </div>
         </div>
       </div>
     </div>
