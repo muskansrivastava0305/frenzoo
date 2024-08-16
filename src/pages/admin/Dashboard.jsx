@@ -1,8 +1,7 @@
 
 
 import React from 'react'
-import { Sidebar } from '../../components'
-import Card from './card'
+import { Card } from '../../components'
 
 function Dashboard() {
   const business_analytics = [
