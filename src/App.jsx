@@ -10,6 +10,7 @@ import Layout from "./Layout";
 import Loader from "./components/Loader";
 import { messaging } from "./firebase";
 import { getToken, onMessage } from "firebase/messaging";
+import Dashboard from "./pages/admin/Dashboard";
 // import Home_page_content from "./pages/user/Home/Home_page_content";
 // import CartPage from "./pages/user/Cart/CartPage";
 // import Preference_page from "./pages/user/Preference/Preference_page";
@@ -88,13 +89,22 @@ function App() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route
-          path="/"
+          path="/admin"
           element={
             <Suspense fallback={<Loader />}>
               <Layout />
             </Suspense>
           }
         >
+          <Route
+            index
+            element={
+              <Dashboard/>
+            }
+          />
+          
+        </Route>
+
           {/* mobile and web routes */}
 
           <Route
@@ -108,7 +118,8 @@ function App() {
 
           {/* Mobile protected routes */}
           <Route
-            index
+            // index
+            path="/"
             element={
               <MobileOnlyRoute isMobileOrTabletDevice={isMobileOrTabletDevice}>
                 <Suspense fallback={<Loader />}>
@@ -167,57 +178,6 @@ function App() {
               </MobileOnlyRoute>
             }
           />
-          {/* <Route
-            index
-            element={
-              <Suspense fallback={<Loader />}>
-                <Protected>
-                  <Home_page_content />
-                </Protected>
-              </Suspense>
-            }
-          /> */}
-          {/* <Route
-            path="/cart_items"
-            element={
-              <Suspense fallback={<Loader />}>
-                <Protected>
-                  <CartPage />
-                </Protected>
-              </Suspense>
-            }
-          />
-          <Route
-            path="/preference"
-            element={
-              <Suspense fallback={<Loader />}>
-                <Protected>
-                  <Preference_page />
-                </Protected>
-              </Suspense>
-            }
-          /> */}
-          {/* <Route
-            path="/place_order_successfully"
-            element={
-              <Suspense fallback={<Loader />}>
-                <OrderProtected>
-                  <Order_placed_page />
-                </OrderProtected>
-              </Suspense>
-            }
-          />
-          <Route
-            path="/order_track"
-            element={
-              <Suspense fallback={<Loader />}>
-                <OrderProtected>
-                  <Order_track_page />
-                </OrderProtected>
-              </Suspense>
-            }
-          /> */}
-        </Route>
       </Routes>
     </Suspense>
   );
