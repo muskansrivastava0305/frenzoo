@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 function Header() {
   return (
-    <div className=" flex justify-between items-center bg-[#ffe98a] w-full px-6 sm:px-8 md:px-10  lg:px-14 py-2">
+    <div className=" fixed flex justify-between items-center bg-[#ffe98a] w-full px-6 sm:px-8 md:px-10  lg:px-14 py-2">
       <div>
         QRDIne-In
       </div>
