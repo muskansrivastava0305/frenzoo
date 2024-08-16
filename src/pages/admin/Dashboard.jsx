@@ -1,10 +1,10 @@
 import React from 'react'
-import { Sidebar } from '../../components'
+import { Sidebarmenu } from '../../components'
 
 function Dashboard() {
   return (
     <div>
-        <Sidebar/>
+        <Sidebarmenu/>
         <div>
             
         </div>
