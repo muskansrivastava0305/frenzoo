@@ -2,7 +2,6 @@
 
 import React from 'react'
 import { BusinessAnalyticsCard } from '../../components'
-import { RecentOrder } from '../../components'
 
 function Dashboard() {
   const business_analytics = [
@@ -476,6 +475,8 @@ function Dashboard() {
               ))
             }
           </div>
+        <Sidebarmenu/>
+        <div>
         </div>
 
         {/* //Recent Order */}
@@ -495,10 +496,7 @@ function Dashboard() {
 
         </div>
       </div>
-
-      {/* //Recent Order */}
-
-
+    </div>
     </div>
   )
 }
