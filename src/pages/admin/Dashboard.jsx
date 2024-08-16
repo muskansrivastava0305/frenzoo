@@ -1,30 +1,38 @@
-import React from "react";
-import { BusinessAnalyticsCard, DashboardTable } from "../../components";
-import { Sidebarmenu } from "../../components";
+import React from 'react'
+import { Sidebarmenu, RecentOrder, BusinessAnalyticsCard } from "../../components";
 
 function Dashboard() {
   const business_analytics = [
     {
       image: "sales.png",
       title: "sales",
-      value: `₹${0}`,
+      value: `₹${0}`
     },
     {
       image: "pending.png",
       title: "Pending",
-      value: 0,
-    },
-    {
+      value: 0
+    }, {
       image: "confirmed.png",
       title: "Confirmed",
-      value: 0,
-    },
-    {
+      value: 0
+    }, {
       image: "cooking.png",
       title: "Cooking",
-      value: 0,
+      value: 0
     },
-  ];
+  ]
+
+  const RecentOrderData = [
+
+    {
+      orderId: "Order# 100026",
+      dateTime: "15-08-24, 06:17 PM",
+      status: "Completed"
+
+    },
+  ]
+
 
   return (
     <div className=" w-full flex">
@@ -54,6 +62,27 @@ function Dashboard() {
                 value={item.value}
               />
             ))}
+
+
+            <div></div>
+          </div>
+
+
+          {/* //Recent Order */}
+
+          <div className=' float-right mt-8 w-full sm:w-80 '>
+            <div className=' flex justify-between mr-8'>
+              <h1 className=' font-semibold'>Recent Order</h1>
+              <p className=' font-semibold text-blue-800 '>View All</p>
+            </div>
+
+            <div className=' mt-8 overflow-y-scroll h-96 overflow-x-hidden'>
+              {RecentOrderData?.map((item, index) => (
+                <RecentOrder key={index} orderId={item.orderId} dateTime={item.dateTime} status={item.status} />
+              ))
+              }
+            </div>
+
           </div>
           <div>
             <DashboardTable/>
@@ -61,7 +90,7 @@ function Dashboard() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default Dashboard;
