@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Sidebar() {
+function Sidebarmenu() {
   return (
     <div className=' bg-black w-72 h-screen'>
       
@@ -8,4 +8,4 @@ function Sidebar() {
   )
 }
 
-export default Sidebar
+export default Sidebarmenu
