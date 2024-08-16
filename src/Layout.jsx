@@ -7,7 +7,7 @@ export default function Layout() {
     <main>
         <Header/>
         <Outlet/>
-        <Footer/>
+        {/* <Footer/> */}
     </main>
   )
 }

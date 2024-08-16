@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { BusinessAnalyticsCard } from '../../components'
+import { Sidebarmenu } from '../../components'
 
 function Dashboard() {
   const business_analytics = [
@@ -46,6 +47,8 @@ function Dashboard() {
         ))
       }
           </div>
+        <Sidebarmenu/>
+        <div>
         </div>
 
       </div>
