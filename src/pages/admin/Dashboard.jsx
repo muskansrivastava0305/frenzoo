@@ -1,8 +1,5 @@
 import React from 'react'
-import { BusinessAnalyticsCard } from '../../components'
-import React from "react";
-import { BusinessAnalyticsCard } from "../../components";
-import { Sidebarmenu } from "../../components";
+import { Sidebarmenu, RecentOrder, BusinessAnalyticsCard } from "../../components";
 
 function Dashboard() {
   const business_analytics = [
@@ -27,7 +24,7 @@ function Dashboard() {
   ]
 
   const RecentOrderData = [
-   
+
     {
       orderId: "Order# 100026",
       dateTime: "15-08-24, 06:17 PM",
@@ -35,7 +32,7 @@ function Dashboard() {
 
     },
   ]
- 
+
 
   return (
     <div className=" w-full flex">
@@ -56,12 +53,6 @@ function Dashboard() {
             </h1>
           </div>
 
-          <div className=' grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-3 m-3'>
-            {
-              business_analytics?.map((item, index) => (
-                <BusinessAnalyticsCard key={index} image={item.image} title={item.title} value={item.value} />
-              ))
-            }
           <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-3 m-3">
             {business_analytics?.map((item, index) => (
               <BusinessAnalyticsCard
@@ -72,36 +63,31 @@ function Dashboard() {
               />
             ))}
 
-          </div>
-          <div></div>
-        </div>
 
-
-        {/* //Recent Order */}
-
-        <div className=' float-right mt-8 w-full sm:w-80 '>
-          <div className=' flex justify-between mr-8'>
-            <h1 className=' font-semibold'>Recent Order</h1>
-            <p className=' font-semibold text-blue-800 '>View All</p>
+            <div></div>
           </div>
 
-          <div className=' mt-8 overflow-y-scroll h-96 overflow-x-hidden'>
-            {RecentOrderData?.map((item, index) => (
-              <RecentOrder key={index} orderId={item.orderId} dateTime={item.dateTime} status={item.status} />
-            ))
-            }
-          </div>
 
+          {/* //Recent Order */}
+
+          <div className=' float-right mt-8 w-full sm:w-80 '>
+            <div className=' flex justify-between mr-8'>
+              <h1 className=' font-semibold'>Recent Order</h1>
+              <p className=' font-semibold text-blue-800 '>View All</p>
+            </div>
+
+            <div className=' mt-8 overflow-y-scroll h-96 overflow-x-hidden'>
+              {RecentOrderData?.map((item, index) => (
+                <RecentOrder key={index} orderId={item.orderId} dateTime={item.dateTime} status={item.status} />
+              ))
+              }
+            </div>
+
+          </div>
         </div>
       </div>
-    </div>
     </div>
   )
-
-      </div>
-    </div>
-  );
-
 }
 
 export default Dashboard;
