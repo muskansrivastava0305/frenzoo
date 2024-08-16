@@ -1,7 +1,7 @@
 // Card.js
 import React from 'react';
 
-const Card = ({ image, title, value }) => {
+const BusinessAnalyticsCard = ({ image, title, value }) => {
   return (
     <div className='shadow-md border w-full border-gray-200 rounded-2xl p-3'>
       <img src={image} alt='' className='w-8 float-right' />
@@ -11,4 +11,4 @@ const Card = ({ image, title, value }) => {
   );
 };
 
-export default Card;
+export default BusinessAnalyticsCard;

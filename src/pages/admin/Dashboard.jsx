@@ -1,7 +1,7 @@
 
 
 import React from 'react'
-import { Card } from '../../components'
+import { BusinessAnalyticsCard } from '../../components'
 
 function Dashboard() {
   const business_analytics = [
@@ -42,7 +42,7 @@ function Dashboard() {
           <div className=' grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-3 m-3'>
           {
         business_analytics?.map((item,index)=>(
-          <Card key={index} image={item.image} title={item.title} value={item.value} />
+          <BusinessAnalyticsCard key={index} image={item.image} title={item.title} value={item.value} />
         ))
       }
           </div>
