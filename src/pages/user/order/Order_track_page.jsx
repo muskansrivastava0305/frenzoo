@@ -369,6 +369,13 @@ const Order_track_page = React.memo(()=> {
               </div>
             </div>
           )}
+
+          <div className=" bg-orange-300 flex justify-center items-center absolute top-0 right-0 w-full h-screen">
+            <div className=" h-52 w-52 bg-black rounded-xl flex justify-center items-center text-white font-semibold">
+            Order Cancelled
+            </div>
+          </div>
+
         </div>
       </div>
     </>

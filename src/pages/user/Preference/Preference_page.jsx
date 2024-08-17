@@ -65,6 +65,7 @@ const MyComponent = () => {
   //     setIsValid(false);
   //   }
   // };
+
   const handleMobileNumberChange = (e) => {
     const value = e.target.value;
   
@@ -122,6 +123,7 @@ const MyComponent = () => {
   },[name , mobileNumber , isAnonymousChecked ])
 
   const handleOrder = async () => {
+    if (loading) return; // Prevent further execution if already loading
     setLoading(true);
     try {
       if (isValid && !nameError && !phoneError) {
@@ -130,7 +132,6 @@ const MyComponent = () => {
           ...cart , device_id:localStorage.getItem('token')
           }
         );
-        setLoading(false);
         const data = response.data;
         if (cart.paymentMethod === "phonepe") {
           dispatch(emptyCart());
@@ -223,6 +224,7 @@ const MyComponent = () => {
         loading={loading}
         action="Proceed"
         onClick={handleOrder}
+        disabled={loading}
       />
       {/* )} */}
     </div>
