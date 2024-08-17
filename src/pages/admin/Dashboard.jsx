@@ -39,7 +39,7 @@ function Dashboard() {
         <div className=" pr-6 pb-6 text-2xl text-[#ED4C79] font-semibold">
           <h1>Welcome QRDine-In</h1>
         </div>
-        <div className=" shadow-md border border-gray-200 ">
+        <div className=" rounded-xl shadow-md shadow-gray-200 border border-gray-200 ">
           <div className=" flex p-5 gap-3 items-center">
             <img
               src=" business_analytics.png "
@@ -64,10 +64,14 @@ function Dashboard() {
             <div></div>
           </div>
         </div>
-        {/* //Recent Order */}
 
+       <div className=" w-full my-6 sm:my-8 items-start flex gap-6 flex-col sm:flex-row gap-2">
+         {/* Dashoard table */}
+         <DashboardTable />
+        
+        {/* //Recent Order */}
         <RecenetOrderComp />
-        <DashboardTable />
+       </div>
       </div>
     </div>
   );

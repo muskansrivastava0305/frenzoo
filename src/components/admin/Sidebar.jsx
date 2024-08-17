@@ -41,7 +41,7 @@ function Sidebarmenu() {
       onMouseLeave={closeNavbar}
       className={`${
         isOpen ? "md:w-96" : "md:w-20"
-      } transition-all duration-300 bg-white w-0 md:visible invisible h-screen md:px-3 py-4 border-r border-r-gray-300 shadow-sm shadow-gray-800`}>      
+      } transition-all duration-300 bg-white w-0 md:visible invisible h-auto md:px-3 py-4 border-r border-r-gray-300 shadow-sm shadow-gray-800`}>      
       <div className=" w-full">
         <div className=" flex justify-center">
           {!isOpen && <i className=" fa-solid fa-magnifying-glass"></i>}

@@ -8,7 +8,7 @@ import {
 } from "./components/user/utils/Protected";
 import Layout from "./Layout";
 import Loader from "./components/Loader";
-// import { messaging } from "./firebase";
+import { messaging } from "./firebase";
 import { getToken, onMessage } from "firebase/messaging";
 import Dashboard from "./pages/admin/Dashboard";
 
@@ -58,14 +58,14 @@ function App() {
     }
   }
 
-  // useEffect(() => {
-  //   // Request permission to send notifications
-  //   requestPermission();
+  useEffect(() => {
+    // Request permission to send notifications
+    requestPermission();
 
-  //   onMessage(messaging, (payload) => {
-  //     console.log("Message received. ", payload);
-  //   });
-  // }, []);
+    onMessage(messaging, (payload) => {
+      console.log("Message received. ", payload);
+    });
+  }, []);
   
   return (
     <Suspense fallback={<Loader />}>

@@ -13,6 +13,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
   },
+  base: '/',
   server:{
     port:5173,
     // get rid of the CORS error
