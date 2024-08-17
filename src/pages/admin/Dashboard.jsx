@@ -65,7 +65,7 @@ function Dashboard() {
           </div>
         </div>
 
-       <div className=" w-full my-6 sm:my-8 items-start flex gap-6 flex-col sm:flex-row gap-2">
+       <div className=" w-full my-6 sm:my-8 items-start flex gap-6 flex-col sm:flex-row">
          {/* Dashoard table */}
          <DashboardTable />
         
