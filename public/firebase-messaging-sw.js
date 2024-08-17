@@ -35,7 +35,7 @@ messaging.onBackgroundMessage((payload) => {
     const notificationTitle = payload.notification?.title || 'Default Title';
     const notificationOptions = {
       body: payload.notification?.body || 'Default Body',
-      icon: '/path-to-your-icon.png', // Replace with your app icon
+      icon: '/mini-logo.png', // Replace with your app icon
     };
   
     // Display the notification

@@ -7,7 +7,8 @@ import { emptyCart } from "../../../Redux/Freatures/User/cartSlice";
 import toast from "react-hot-toast";
 import { ApiUrl } from "../../../Api/ApiConstants";
 
-const Order_track_page = React.memo(()=> {
+const Order_track_page = React.memo(() => {
+  // const [cancelled ,setIsCancelled] = useState(false)
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -21,56 +22,53 @@ const Order_track_page = React.memo(()=> {
       );
       const data = response.data;
 
-    //  if (initialLoad) {
-    //   toast.success(`Order ${data?.order_status}`);
-    // }
-      
-      if (data?.order_status === "completed") {
-        toast.success("Invoice gnerated successfully")
-        navigate(`/generate/invoice/${data?.order_id}/${data?.branch_id}`);
-        // dispatch(emptyCart());  // change in useeffect hoosk in invoice.jsx page . 
-      }else if (data?.order_status === 'Cancelled'){
-       setTimeout(() => {
-        dispatch(emptyCart());  // change in useeffect hoosk in invoice.jsx page . 
-       }, 5000);
+      //  if (initialLoad) {
+      //   toast.success(`Order ${data?.order_status}`);
+      // }
 
+      if (data?.order_status === "completed") {
+        toast.success("Invoice gnerated successfully");
+        navigate(`/generate/invoice/${data?.order_id}/${data?.branch_id}`);
+        // dispatch(emptyCart());  // change in useeffect hoosk in invoice.jsx page .
+      } else if (data?.order_status === "Cancelled") {
+        // setIsCancelled(true)
+        setTimeout(() => {
+          // setIsCancelled(false)
+          dispatch(emptyCart()); // change in useeffect hoosk in invoice.jsx page .
+        }, 5000);
       }
       setData(data);
     } catch (error) {
-      toast.error("failed to fetch order status")
+      toast.error("failed to fetch order status");
     }
   }
 
   useEffect(() => {
     console.log("rerender");
-    
+
     getOrderStatus(true);
-    
+
     let statusInterval = setInterval(() => {
       getOrderStatus();
     }, 5000);
 
-
     return () => clearInterval(statusInterval); // Clear interval on component unmount
   }, []); // Add data.order_status as dependency
 
-   // Watch for order status changes
-   useEffect(() => {
+  // Watch for order status changes
+  useEffect(() => {
     if (data?.order_status) {
       toast.success(`Order ${data?.order_status}`);
     }
   }, [data?.order_status]); // This effect will run whenever order_status changes
 
-
   async function handlePayment() {
-   try {
-    const response = await axios.get(
-      `${ApiUrl.pay}/${cart?.order_id}`
-    );
-    window.location.href = response.data;
-   } catch (error) {
-    toast.error("Payment failed")
-   }
+    try {
+      const response = await axios.get(`${ApiUrl.pay}/${cart?.order_id}`);
+      window.location.href = response.data;
+    } catch (error) {
+      toast.error("Payment failed");
+    }
   }
 
   return (
@@ -288,15 +286,17 @@ const Order_track_page = React.memo(()=> {
                   served
                 </div>
               </div>
-              { data?.order_status === "Cancelled" && ( <div
-                className={` ${
-                  data?.order_status === "Ready To serve"
-                    ? "border-l-orange-500"
-                    : "bg-l-gray-400  border-l-gray-400 "
-                } my-1 ml-2 border-l-2  border-dashed h-10`}
-              ></div>)}
+              {data?.order_status === "Cancelled" && (
+                <div
+                  className={` ${
+                    data?.order_status === "Ready To serve"
+                      ? "border-l-orange-500"
+                      : "bg-l-gray-400  border-l-gray-400 "
+                  } my-1 ml-2 border-l-2  border-dashed h-10`}
+                ></div>
+              )}
             </div>
-            
+
             {data?.order_status === "served" && (
               <div
                 className={`${
@@ -310,76 +310,83 @@ const Order_track_page = React.memo(()=> {
             )}
           </div>
           {/* Cancelled */}
-          {
-            data?.order_status === "Cancelled" && (
-              <div className="flex justify-between ">
-                <div>
-                  <div
+          {data?.order_status === "Cancelled" && (
+            <div className="flex justify-between ">
+              <div>
+                <div
+                  className={` ${
+                    data?.order_status === "Cancelled" && "text-white"
+                  } flex justify-center items-center gap-3`}
+                >
+                  <i
                     className={` ${
-                      data?.order_status === "Cancelled" && "text-white"
-                    } flex justify-center items-center gap-3`}
-                  >
-                    <i
-                      className={` ${
-                        data?.order_status === "Cancelled"
-                          ? "bg-orange-500  border-orange-500"
-                          : "bg-gray-400  border-gray-400 "
-                      } text-lg border text-white rounded-full text-whiteborder fa-regular fa-circle-check`}
-                    ></i>
-                    <div
-                      className={`${
-                        data?.order_status === "Cancelled"
-                          ? " text-orange-500 "
-                          : "text-gray-600"
-                      } text-[15px]`}
-                    >
-                      Cancelled
-                    </div>
-                  </div>
-                </div>
-                
-                {data?.order_status === "Cancelled" && (
+                      data?.order_status === "Cancelled"
+                        ? "bg-orange-500  border-orange-500"
+                        : "bg-gray-400  border-gray-400 "
+                    } text-lg border text-white rounded-full text-whiteborder fa-regular fa-circle-check`}
+                  ></i>
                   <div
                     className={`${
                       data?.order_status === "Cancelled"
                         ? " text-orange-500 "
                         : "text-gray-600"
-                    } text-sm`}
+                    } text-[15px]`}
                   >
-                    {moment(data?.updated_at).format("LT")}
+                    Cancelled
                   </div>
-                )}
+                </div>
               </div>
-            )
-          }
-          <div className=" border border-dashed my-8"></div>
-          {data?.payment_status !== "paid" && (
-            <div className=" gap-5 flex">
-              <button
-                onClick={handlePayment}
-                className=" bg-green-700 cursor-pointer text-sm sm:text-md w-1/2 sm:w-44 flex justify-center items-center rounded-md text-white px-4 py-2"
-              >
-                <div>Pay Online</div>
-              </button>
-              <div className=" bg-yellow-400 w-1/2 sm:w-96 flex justify-center items-center rounded-md text-white px-4 py-2">
-                <Link>
-                  Cash{" "}
-                  <i className=" rounded-full fa-regular fa-circle-check"></i>
-                </Link>
-              </div>
+
+              {data?.order_status === "Cancelled" && (
+                <div
+                  className={`${
+                    data?.order_status === "Cancelled"
+                      ? " text-orange-500 "
+                      : "text-gray-600"
+                  } text-sm`}
+                >
+                  {moment(data?.updated_at).format("LT")}
+                </div>
+              )}
             </div>
           )}
+          <div className=" border border-dashed my-8"></div>
+          {data?.order_status !== "Cancelled" && (
+            <>
+              {data?.payment_status !== "paid" && (
+                <div className=" gap-5 flex">
+                  <button
+                    onClick={handlePayment}
+                    className=" bg-green-700 cursor-pointer text-sm sm:text-md w-1/2 sm:w-44 flex justify-center items-center rounded-md text-white px-4 py-2"
+                  >
+                    <div>Pay Online</div>
+                  </button>
+                  <div className=" bg-yellow-400 w-1/2 sm:w-96 flex justify-center items-center rounded-md text-white px-4 py-2">
+                    <Link>
+                      Cash{" "}
+                      <i className=" rounded-full fa-regular fa-circle-check"></i>
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
 
-          <div className=" bg-orange-300 flex justify-center items-center absolute top-0 right-0 w-full h-screen">
-            <div className=" h-52 w-52 bg-black rounded-xl flex justify-center items-center text-white font-semibold">
-            Order Cancelled
+          {/* {cancelled && <div className=" bg-[#00000040] flex justify-center items-center absolute top-0 right-0 w-full h-full">
+            <div className="translate-y-4 transition-all duration-300 relative shadow-md shadow-gray-500 w-52 p-6 flex-col gap-5 bg-white rounded-xl flex justify-center items-center text-black">
+              <div className=" -top-7 overflow-hidden w-16 h-16 rounded-full absolute">
+                <img src="/mini-logo.png" alt="" />
+              </div>
+              <div className=" pt-5 text-xl font-semibold">
+                Order <span className=" text-red-700">Cancelled</span>
+              </div>
+              <button onClick={()=> setIsCancelled(false)} className=" bg-orange-400 text-white px-10 rounded-md text-sm py-2">OK</button>
             </div>
-          </div>
-
+          </div>} */}
         </div>
       </div>
     </>
   );
-})
+});
 
 export default Order_track_page;
