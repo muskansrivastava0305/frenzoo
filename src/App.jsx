@@ -8,15 +8,10 @@ import {
 } from "./components/user/utils/Protected";
 import Layout from "./Layout";
 import Loader from "./components/Loader";
-import { messaging } from "./firebase";
+// import { messaging } from "./firebase";
 import { getToken, onMessage } from "firebase/messaging";
 import Dashboard from "./pages/admin/Dashboard";
-// import Home_page_content from "./pages/user/Home/Home_page_content";
-// import CartPage from "./pages/user/Cart/CartPage";
-// import Preference_page from "./pages/user/Preference/Preference_page";
-// import Order_placed_page from "./pages/user/order/Order_placed_page";
-// import Order_track_page from "./pages/user/order/Order_track_page";
-// import Invoice from "./pages/user/Invoice/Invoice";
+
 const Home_page_content = React.lazy(() =>
   import("./pages/user/Home/Home_page_content")
 );
@@ -63,28 +58,15 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    // Request permission to send notifications
-    requestPermission();
+  // useEffect(() => {
+  //   // Request permission to send notifications
+  //   requestPermission();
 
-    onMessage(messaging, (payload) => {
-      console.log("Message received. ", payload);
-    });
-  }, []);
-
-  // if (!isMobileOrTabletDevice) {
-  //   return (
-  //     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-  //       <h1 className="text-2xl font-bold text-red-500">
-  //         Website not supported on this device
-  //       </h1>
-  //       <p className="text-gray-700">
-  //         Please access this website on a mobile or tablet device.
-  //       </p>
-  //     </div>
-  //   );
-  // }
-
+  //   onMessage(messaging, (payload) => {
+  //     console.log("Message received. ", payload);
+  //   });
+  // }, []);
+  
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
