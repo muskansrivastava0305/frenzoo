@@ -8,7 +8,7 @@ import {
   selectTotalItemCount,
   selectTotalPrice,
 } from "../../../Redux/Freatures/User/cartSlice";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import DisplayCard from "../utils/DisplayCard";
 import Loader from "../../../components/Loader";
@@ -29,6 +29,7 @@ function Home_page_content() {
   const table = searchParams.get("table");
   const branchId = searchParams.get("branch_id");
   const [expandedProducts, setExpandedProducts] = useState({});
+  const navigate  =  useNavigate()
 
   async function getTableData(isInitialLoad = false) {
     if (isInitialLoad) setInitialLoading(true);
@@ -181,7 +182,9 @@ function Home_page_content() {
                   // price={price}
                   // item={totalCount}
                   action="View Cart"
-                  to="/cart_items"
+                  onClick={() => {
+                    navigate(`/cart_items?table=${table}&branch_id=${branchId}`);
+                  }}
                 />
               )}
             </div>
