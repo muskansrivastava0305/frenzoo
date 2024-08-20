@@ -13,10 +13,6 @@ const DashboardTable = () => {
             <h1 className=" font-semibold text-lg">Table Booking Today</h1>
                  
             </div>
-
-
-
-
             <TableCard />
         </div>
     );

@@ -6,6 +6,7 @@ import RecentOrder from "./admin/RecentOrder"
 import Sidebarmenu from "./admin/Sidebar"
 import DashboardTable from "./admin/DashboardTable"
 import RecenetOrderComp from "./admin/RecenetOrderComp"
+import SalesReportPage from "@/pages/admin/SalesReport_page"
 
 export {
     Header,
@@ -16,4 +17,5 @@ export {
     DashboardTable,
     RecentOrder,
     RecenetOrderComp
+
 }
