@@ -10,7 +10,8 @@ import Layout from "./Layout";
 import Loader from "./components/Loader";
 import { messaging } from "./firebase";
 import { getToken, onMessage } from "firebase/messaging";
-import Dashboard from "./pages/admin/Dashboard";
+import SalesReport_page from "./pages/admin/SalesReport_page";
+import Dashboard_page from "./pages/admin/Dashboard_page";
 
 const Home_page_content = React.lazy(() =>
   import("./pages/user/Home/Home_page_content")
@@ -81,10 +82,15 @@ function App() {
           <Route
             index
             element={
-              <Dashboard/>
+              <Dashboard_page/>
             }
           />
-          
+          <Route
+            path="/admin/sales-report"
+            element={
+              <SalesReport_page/>
+            }
+          />
         </Route>
 
           {/* mobile and web routes */}
